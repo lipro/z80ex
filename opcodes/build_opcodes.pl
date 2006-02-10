@@ -1,0 +1,666 @@
+#!/usr/bin/perl -w
+
+use strict;
+
+sub next_t
+{
+	my $arref = shift;
+	my $val = splice @$arref,0,1;
+	die "No more timings available!" if(!defined($val));
+	return($val);
+}
+
+sub get_flag_co
+{
+	my $fl = shift;
+	my $out="";
+	my $is_n=0;
+	
+	if($fl eq 'P') {$fl = 'NS';}
+	elsif($fl eq 'M') {$fl = 'S';}
+	elsif($fl eq 'PE') {$fl = 'P';}	
+	elsif($fl eq 'PO') {$fl = 'NP';}	
+	
+	$is_n=1 if(substr($fl,0,1) eq 'N');
+	
+	
+	$out.="	if(";
+	$out.="!(" if($is_n);
+	$out.="F & FLAG_";
+	if($is_n) {$out.=substr($fl,1,1);}
+	else {$out.=$fl;}
+	$out.=")" if($is_n);
+	$out.=")";
+	
+	return($out);
+}
+
+sub is_arg_16bit
+{
+	my $arg = shift;
+	my $res=0;
+
+	$res=1 if((length($arg) == 2) and ($arg !~ /^\w+[Hh]/) and ($arg ne 'nn'));
+
+#print "checking $arg gives $res\n";	
+	return($res);
+}
+
+# convert one command to C code
+sub convert_to_c
+{
+	my $readbyte="READ_MEM(";
+	my $writebyte="WRITE_MEM(";
+	
+	my $opc = shift;
+	my $def = shift;
+	my $fnname = shift;
+	my $out = '';
+	my $head = '';
+	my $foot = '';
+	my $arg_str = '';
+	my @arguments =();
+	
+	my @ww=();
+	my @rr=();
+	
+	######
+	# for commands that writes to memory or port
+	my $cmd_mwrite = 0; #cmd writes to memory thru (regpair[+d]) or (adress) 
+	my $cmd_pwrite = 0; #cmd writes to port thru (port)
+	my $cmd_memmod = 0; #cmd modifyes data in memory, ie read-modify-write
+	my $cmd_is_16bit = 0;
+	my $cmd_cyclyc = 0;
+	my $cmd_branch = 0;
+	######
+
+	if(!$$opc{'asm'}) {return("");}
+
+	if($def eq 'base')
+	{
+		$$fnname = 'op_'.$$opc{'opcode'};
+	}
+	else
+	{
+		$$fnname = 'op_'.uc($def).'_'.$$opc{'opcode'};
+	}
+	#$$fnname = 'opc_'.$$opc{'asm'}.'_'.$def;
+	#$$fnname =~ s/\s/_/g;
+	#$$fnname =~ s/\(/_bR_/g;
+	#$$fnname =~ s/\)/_Rb_/g;
+	#$$fnname =~ s/\+/_plus_/g;
+	#$$fnname =~ s/\,/_cm_/g;
+
+	$head.="/*$$opc{asm}*/\n" if($$opc{asm});
+	$$opc{'asm'} =~ s/\'/_/g;
+	$head.="static void $$fnname(Z80EX_CONTEXT *cpu)\n{\n";
+	
+	if($$opc{'asm'} =~ /^(LD\sA,R|LD\sR,A|LD\sA,I)$/)
+	{
+		$$opc{'asm'} =~ s/\s/_/g;
+		$$opc{'asm'} =~ s/,/_/g;
+	}
+	
+	if($$opc{rd})
+	{
+		@rr=split /,/,$$opc{rd};
+	}
+	
+	if($$opc{wr})
+	{
+		@ww=split /,/,$$opc{wr};
+	}
+
+	my @pair = split /\s/,$$opc{'asm'};
+	#$pair[0] == command name now...
+
+	$pair[0]='IM_' if($pair[0] eq 'IM');
+
+	$cmd_cyclyc=1 if($pair[0] =~ /^(LDIR|LDDR|OTIR|OTDR|INIR|INDR|CPDR|CPIR|DJNZ)$/);
+
+	if($pair[0] eq 'shift')
+	{
+		if($def ne 'base')
+		{
+			$$fnname = "opc_".uc($def).$pair[1];
+		}
+		else
+		{
+			$$fnname = "opc_".$pair[1];
+		}
+		return("");
+	}
+	elsif($pair[0] eq 'ignore' or $pair[0] eq 'reset')
+	{
+		$$fnname = "NULL";
+		return("");
+	}
+
+	my @tst = split /\//,$$opc{t}; #t-states
+	
+	if(defined($pair[1])) #mnemonic with args
+	{
+		my $dbus_arg=0; #number of argument that references memory, or 0
+		@arguments = split /,/,$pair[1]; #split args
+
+		#support for ld a, rlc(ix+d) -alike constructs
+		if($pair[2])
+		{
+			splice @arguments,$#arguments+1,1,(split /,/,$pair[2]);
+		}
+
+		die "err1" if($#arguments > 1 and !$pair[2]);
+		
+		my $nnn=1;
+		foreach my $argg (@arguments)
+		{
+#print "$arg--";		
+			$dbus_arg = $nnn if($argg =~ /^\([\w\+]+\)$/);
+			$nnn++;
+		}
+#print "\n";		
+
+		$cmd_branch=1 if(($#arguments && $pair[0] =~ /^(CALL|JP|JR)$/) || $pair[0] =~ /^RET$/);
+
+		#command works with port or memory data... clarify its type
+		if($dbus_arg)
+		{
+			if($pair[0] eq 'LD')
+			{			
+				if($arguments[1] =~ /^(RLC|RRC|RL|RR|SLA|SRA|SLL|SRL|SET|RES)$/)
+				{
+					$cmd_mwrite = 1;
+				}
+				elsif($dbus_arg == 1) #first arg
+				{
+					die ("LD with one arg!") if(!$arguments[1]);
+					$cmd_mwrite = 1;
+					$cmd_is_16bit=is_arg_16bit($arguments[1]);
+				}
+				else
+				{
+					$cmd_is_16bit=is_arg_16bit($arguments[0]);
+				}
+			}
+			elsif($pair[0] eq 'EX')
+			{
+				die("no such EX") if ($dbus_arg == 2);
+				$cmd_mwrite = 1;
+				$cmd_is_16bit = 1;
+				$cmd_memmod = 1;
+			}
+			elsif($pair[0] =~ /^(ADD|SUB|ADC|SBC)$/)
+			{
+				$cmd_mwrite = 0;
+			}
+			elsif($pair[0] eq 'INC' or $pair[0] eq 'DEC')
+			{
+				die("no such inc/dec") if ($dbus_arg == 2 or $arguments[1]);
+				$cmd_mwrite = 1;
+				$cmd_memmod = 1;
+			}
+			elsif($pair[0] =~ /^(RLC|RRC|RR|RL|SLA|SRA|SLL|SRL)$/)
+			{
+				die("no such rotate cmd") if ($dbus_arg == 2 or $arguments[1]);
+				$cmd_mwrite = 1;
+				$cmd_memmod = 1;
+			}
+			elsif($pair[0] eq 'BIT')
+			{
+				die("no such bit cmd") if ($dbus_arg == 1);
+				$cmd_mwrite = 0;
+			}
+			elsif($pair[0] eq 'RES' or $pair[0] eq 'SET')
+			{
+				die("no such set/res cmd") if ($dbus_arg == 1);
+				$cmd_mwrite = 1;
+				$cmd_memmod = 1;
+			}
+			elsif($pair[0] eq 'JP')
+			{
+				$cmd_is_16bit = 1;
+				$cmd_mwrite = 0;
+			}
+			elsif($pair[0] =~ /^(OR|XOR|AND)$/)
+			{
+				$cmd_mwrite = 0;
+			}
+			elsif($pair[0] eq 'CP')
+			{
+				$cmd_mwrite = 0;
+			}
+			elsif($pair[0] eq 'SUB')
+			{
+				$cmd_mwrite = 0;
+			}
+			elsif($pair[0] eq 'IN' or $pair[0] eq 'IN_F')
+			{
+				$cmd_pwrite = 0;
+			}						
+			elsif($pair[0] eq 'OUT')
+			{
+				$cmd_pwrite = 1;
+			}									
+			else
+			{
+				die("unknown cmd that references mem adress or port: $pair[0]\n")
+			}
+		}
+		
+		die "not all timings given for $$opc{'asm'}!" if((!defined($$opc{rd}) or !defined($$opc{wr})) and $cmd_memmod);
+		
+		#branching
+		if($cmd_branch)
+		{
+			$out.= get_flag_co($arguments[0])." {\n";
+			#$pair[0] = $pair[0].'_COND';
+			splice(@arguments,0,1);
+		}
+				
+		#process the rest args (numbers or registers)
+		my $nn=1;
+		my $add_op=0;
+		my $add_op_arg='';
+		my $skip_next=0;
+		#print "-- cmd_mwrite=$cmd_mwrite, dbus_arg=$dbus_arg --\n";		
+		foreach my $arg (@arguments)
+		{					
+			if($skip_next)
+			{
+				$skip_next=0;
+				$nn++;
+				next;
+			}
+			
+			if($pair[0] eq 'IM_')
+			{
+				$arg='IM'.$arg;
+			}
+					
+			if($arg =~ /^(RLC|RRC|RL|RR|SLA|SRA|SLL|SRL)$/)
+			{
+				$add_op = $arg;
+				$nn++;
+				next;
+			}
+			elsif($arg =~ /^(SET|RES)$/)
+			{
+				$add_op = $arg;
+				die "jopa" if(!$arguments[$nn] && !$arguments[$nn+1]);
+				$add_op_arg = $arguments[$nn].',';
+			
+				$nn++;
+				$skip_next=1;
+				next;
+			}
+			elsif($arg eq 'offset')
+			{
+				$head.="	temp_byte=READ_OP();\n";
+				$head.="	temp_byte_s=(temp_byte & 0x80)? -(((~temp_byte) & 0x7f)+1): temp_byte;\n";
+				$arg_str.="temp_byte_s";
+			}
+
+			elsif($arg =~ /^nn$/) #byte
+			{
+				$head.="	temp_byte=READ_OP();\n";
+				$arg_str.="temp_byte";
+			}
+			
+			elsif($arg =~ /^nnnn$/) #word
+			{
+				$head.="	temp_word.b.l=READ_OP();\n";
+				$head.="	temp_word.b.h=READ_OP();\n";				
+				$arg_str.="temp_word.w";
+			}			
+			elsif($arg =~ /^\(nnnn\)$/) #memory referenced by word
+			{
+				die "err22" if(!$dbus_arg or $dbus_arg!=$nn);
+
+				$head.="	temp_addr.b.l=READ_OP();\n";						
+				$head.="	temp_addr.b.h=READ_OP();\n";						
+
+				if($cmd_is_16bit)
+				{
+					$arg_str.="temp_word.w";
+
+					if(!$cmd_mwrite or $cmd_memmod)
+					{
+						die "2nd shift-op for 16bit cmd" if($add_op);
+					
+						$head.="	".$readbyte."temp_word.b.l,temp_addr.w,".next_t(\@rr).");\n";
+						$head.="	".$readbyte."temp_word.b.h,temp_addr.w+1,".next_t(\@rr).");\n";
+					}
+					
+					if($cmd_mwrite)
+					{
+						die "wr isnt given for 16bit memory-write op" if(!$$opc{wr});
+				
+						$foot.="	".$writebyte."temp_addr.w,temp_word.b.l,".next_t(\@ww).");\n";
+						$foot.="	".$writebyte."temp_addr.w+1,temp_word.b.h,".next_t(\@ww).");\n";
+					}
+				}
+				else
+				{
+					$arg_str.="temp_byte";
+					
+					if(!$cmd_mwrite or $cmd_memmod)
+					{
+						$head.="	".$readbyte."temp_byte,temp_addr.w,".next_t(\@rr).");\n";
+						$head.="	$add_op(".$add_op_arg."temp_byte,".next_t(\@rr).");\n" if($add_op);
+					}
+					
+					if($cmd_mwrite)
+					{
+						if($add_op)
+						{
+							$head.="	".$readbyte."temp_byte,temp_addr.w,".next_t(\@rr).");\n";
+							$head.="	$add_op(".$add_op_arg."temp_byte);\n" if($add_op);
+						}
+					
+						$foot.="	".$writebyte."temp_addr.w,temp_byte,".next_t(\@ww).");\n";
+					}
+				}
+			}
+			elsif($arg =~ /^\(nn\)$/) #dealing with port
+			{
+				die "err22" if(!$dbus_arg or $dbus_arg!=$nn);
+				die ("(nn) notation, but it isnt 'out' or 'in' command -- $pair[0]") if(!$cmd_pwrite and ($pair[0] !~ /^(IN|IN_F)$/));
+				
+				$arg_str.="(READ_OP() + ( A << 8 ))"
+				
+			}
+			elsif($arg eq '(C)') #dealing with port
+			{
+				die "err22" if(!$dbus_arg or $dbus_arg!=$nn);
+				die ("(C) notation, but it isnt 'out' or 'in' command -- $pair[0]") if(!$cmd_pwrite and ($pair[0] !~ /^(IN|IN_F)$/));
+
+				$arg_str.= "BC";
+			}
+			elsif($arg =~ /^\([\w\+]+\)$/) #memory adressing by regpair (or regpair+d)
+			{
+				die "err22: dbus_arg=$dbus_arg" if(!$dbus_arg or $dbus_arg!=$nn);
+					
+				(my $ref) = $arg =~ /^\(([\w\+]+)\)$/;			
+				die "err66" if(!$ref);
+				
+				if($ref =~ /\+/) # (regpair + dd)
+				{
+					#взять число и приписать его к ref вместо dd
+					if(($def ne 'ddcb') and ($def ne 'fdcb'))
+					{
+						$head.="	temp_byte=READ_OP();\n";
+						$head.="	temp_byte_s=(temp_byte & 0x80)? -(((~temp_byte) & 0x7f)+1): temp_byte;\n";
+					}
+					
+					(my $regg) = $ref =~ /^(\w+)\+\w+$/;
+					die "err 889 (ref=$ref)" if(!$regg);
+					$ref = $regg.'+temp_byte_s';
+				}
+				
+				#$head.="			temp_addr.w=$ref;\n";						
+
+				if($cmd_is_16bit)
+				{
+					$arg_str.="temp_word.w";
+
+					if(!$cmd_mwrite or $cmd_memmod)
+					{
+						die "2nd shift-op for 16bit cmd" if($add_op);
+					
+						$head.="	".$readbyte."temp_word.b.l,$ref,".next_t(\@rr).");\n";
+						$head.="	".$readbyte."temp_word.b.h,$ref+1,".next_t(\@rr).");\n";					
+					}
+
+					if($cmd_mwrite)
+					{
+						die "wr isnt given for 16bit memory-write op" if(!$$opc{wr});
+
+
+						$foot.="	".$writebyte."$ref,temp_word.b.l,".next_t(\@ww).");\n";
+						$foot.="	".$writebyte."$ref+1,temp_word.b.h,".next_t(\@ww).");\n";
+					}
+				}
+				else
+				{
+					$arg_str.="temp_byte";
+					
+					if(!$cmd_mwrite or $cmd_memmod)
+					{
+						$head.="	".$readbyte."temp_byte,$ref,".next_t(\@rr).");\n";
+						$head.="	$add_op(".$add_op_arg."temp_byte);\n" if($add_op);
+
+					}					
+					
+					if($cmd_mwrite)
+					{
+						if($add_op)
+						{
+							$head.="	".$readbyte."temp_byte,$ref,".next_t(\@rr).");\n";
+							$head.="	$add_op(".$add_op_arg."temp_byte);\n" if($add_op);
+						}
+					
+						$foot.="	".$writebyte."$ref,temp_byte,".next_t(\@ww).");\n";
+					}
+				}
+			}			
+			else
+			{
+				$arg_str.=$arg;
+			}
+			
+			$arg_str.=',' if($nn-1 < $#arguments);
+			$nn++;
+		}
+	}
+
+	if($pair[0] =~ /(LD|ADD|ADC|SBC|INC|DEC)/)
+	{
+		foreach my $aa (@arguments)
+		{
+			if(is_arg_16bit($aa))
+			{
+				$pair[0] = $pair[0].'16';
+				last;
+			}
+		}
+	}
+
+		
+	######## give timing info for some cmds 
+	
+	if($cmd_cyclyc) #give cyclyc commands full timing info
+	{
+		die("block/cycle command, but only one timing given!") if(!$tst[0] or !$tst[0]);
+		$arg_str.= ', ' if($arg_str ne '');
+		$arg_str.= "/*t:*/ /*t1*/$tst[0],/*t2*/$tst[1]";
+	}
+	
+	########
+
+	if($#rr >= 0)
+	{
+		$arg_str.= ', ' if($arg_str ne '');
+		$arg_str.= '/*rd*/';
+	
+		my $nnum=0;
+		foreach my $rarg (@rr)  #it there's rd-timings left, pass them as arguments
+		{
+			$arg_str.=',' if($nnum);
+			$arg_str.=$rarg;
+			$nnum++;
+		}
+	}
+
+
+	if($#ww >= 0)
+	{
+		$arg_str.= ', ' if($arg_str ne '');
+		$arg_str.= '/*wr*/';
+	
+		my $nnum=0;
+		foreach my $warg (@ww)  #it there's wr-timings left, pass them as arguments
+		{
+			$arg_str.=',' if($nnum);
+			$arg_str.=$warg;
+			$nnum++;
+		}
+	}
+	
+	
+	$out.="	$pair[0]".'('.$arg_str.");\n" if($pair[0] ne 'NOP');
+	
+	if($cmd_branch)
+	{
+		die "branching cmd, two timings must be given!" if(!$tst[0] or !$tst[1]);
+		$foot.="	T_WAIT_UNTIL($tst[1]);\n	}\n	else { T_WAIT_UNTIL($tst[0]);}\n";
+	}
+	else
+	{
+		$foot.="	T_WAIT_UNTIL($tst[0]);\n" if(!$cmd_cyclyc);
+	}
+
+	$foot.="	return;";
+	
+	return($head.$out.$foot."\n}\n");
+}
+
+
+
+
+
+sub process_ofile
+{
+	my $fname = shift;
+	my $def = shift;
+	my $to_file = shift;
+	my $fnname;
+	my $pair;
+	
+	my @tbl=();
+	my %nm_hash=();
+	
+	print "/*processing $fname.dat...*/\n\n";
+	
+	open(NP,"<$fname.dat") or die ("cannot open $fname");
+	open(OFILE,'>./opcodes_'.$def.'.c') or die ("cannot create ".'./'.$fname.'.c.inc') if($to_file);
+	
+	select(OFILE) if($to_file);
+	
+	my $header = "/* autogenerated from $fname.dat, do not edit */\n\n";
+	
+	print $header;
+	
+	while(<NP>)
+	{
+		my $out = "";
+		chomp;
+		next if(/^\s*$/);
+		next if(/^#/);
+		my %opc;
+
+		if(lc($def) eq 'dd' or lc($def) eq 'ddcb')
+		{
+			$_ =~ s/REGISTER/IX/g;
+		}
+		elsif(lc($def) eq 'fd' or lc($def) eq 'fdcb')
+		{
+			$_ =~ s/REGISTER/IY/g;
+		}
+#print ">>> $_ <<<\n";		
+		#my($opcode, $mnemonic, $tstates, $w) = $_ =~ /^(\w+)=\"(.*)\"/;
+		foreach $pair (split /\s\s+/)
+		{
+			die("wrong format -- tab detected") if($pair =~ /\t/);
+		
+			$pair =~ s/^\s*//;
+			$pair =~ s/\s*$//;
+			#print "pair = [$pair]\n";
+		
+			if($pair =~ /^0x\w\w$/)
+			{
+				$opc{"opcode"}=$pair;
+			}
+			else
+			{
+				my($nm,$val) = $pair =~ /^(\w+)=\"(.*)\"$/;
+				die "parse error for $pair" if(!$nm or !defined($val));
+				if($nm =~ /^(t|wr|rd)$/)
+				{
+					$opc{"$nm"}=$val;
+				}
+				else
+				{
+					$opc{"opcode"}=$nm;
+					$opc{"asm"}=$val;
+				}
+			}
+		}
+	
+		my $c = &convert_to_c(\%opc, $def, \$fnname);
+		
+		print "$c\n" if(!$nm_hash{$fnname} && $opc{"asm"});
+		
+		#add to table
+		if($opc{"asm"})
+		{
+			$tbl[hex($opc{"opcode"})]=$fnname;
+			$nm_hash{$fnname}=1;
+		}
+		else
+		{
+			$tbl[hex($opc{"opcode"})]='#';
+		}
+	
+		undef(%opc);
+	}
+
+	my$ii;
+	
+	#empty fields means NULL
+	for($ii=0;$ii < 256;$ii++)
+	{
+		$tbl[$ii]='NULL' if(!defined($tbl[$ii]));
+	}
+
+	# for cloned BIT ddcb/fdcb opcodes 
+	my $last;
+	for($ii=255;$ii >= 0;$ii--)
+	{
+		$tbl[$ii]=$last if($tbl[$ii] eq '#');
+		$last=$tbl[$ii];
+	}
+	
+	
+	my $footer="\n\n/**/\n";
+	$footer .= "static z80ex_opcode_fn opcodes_".$def."[0x100] = {\n";
+	
+	for($ii=0;$ii < 256;$ii++)
+	{
+		$footer.= sprintf(' %-14s',$tbl[$ii]);
+		
+		$footer.=',' if($ii != 255);		
+		$footer.= "\n" if(($ii+1)/4 == int(($ii+1)/4));
+	}
+	
+	chop $footer;
+	$footer.="\n};\n";
+	
+	print $footer;
+	
+	close(OFILE) if($to_file);
+	select(STDOUT);
+	close(NP);
+}
+
+my $to_file = 1;
+
+&process_ofile('./opcodes_base','base',$to_file);
+&process_ofile('./opcodes_cb','cb',$to_file);
+&process_ofile('./opcodes_ed','ed',$to_file);
+&process_ofile('./opcodes_ddfd','dd',$to_file);
+&process_ofile('./opcodes_ddfd','fd',$to_file);
+&process_ofile('./opcodes_ddfdcb','ddcb',$to_file);
+&process_ofile('./opcodes_ddfdcb','fdcb',$to_file);
+
+
+
