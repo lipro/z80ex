@@ -81,27 +81,34 @@
 #define FLAG_Z	0x40
 #define FLAG_S	0x80
 
+/*read opcode*/
+#define READ_OP_M1() (cpu->int_vector_req? cpu->intread_cb(cpu, cpu->intread_cb_user_data) : cpu->mread_cb(cpu, PC++, 1, cpu->mread_cb_user_data))
 
-#define READ_OP() (cpu->int_vector_req? cpu->intread_cb(cpu, cpu->intread_cb_user_data) : cpu->mread_cb(cpu, PC++, cpu->mread_cb_user_data))
+/*read opcode argument*/
+#define READ_OP() (cpu->int_vector_req? cpu->intread_cb(cpu, cpu->intread_cb_user_data) : cpu->mread_cb(cpu, PC++, 0, cpu->mread_cb_user_data))
 
+/*read byte from memory*/
 #define READ_MEM(result, addr, t_state) \
 { \
 	T_WAIT_UNTIL(t_state); \
-	result=(cpu->mread_cb(cpu, (addr), cpu->mread_cb_user_data)); \
+	result=(cpu->mread_cb(cpu, (addr), 0, cpu->mread_cb_user_data)); \
 }
 
+/*read byte from port*/
 #define READ_PORT(result, port, t_state) \
 { \
 	T_WAIT_UNTIL(t_state); \
 	result=(cpu->pread_cb(cpu, (port), cpu->pread_cb_user_data)); \
 }
 
+/*write byte to memory*/
 #define WRITE_MEM(addr, vbyte, t_state) \
 { \
 	T_WAIT_UNTIL(t_state); \
 	cpu->mwrite_cb(cpu, addr, vbyte, cpu->mwrite_cb_user_data); \
 }
 
+/*write byte to port*/
 #define WRITE_PORT(port, vbyte, t_state) \
 { \
 	T_WAIT_UNTIL(t_state); \
@@ -114,6 +121,18 @@
 	int nn;\
 	for(nn=cpu->op_tstate;nn < t_state;nn++) { \
 		cpu->op_tstate++; \
+		cpu->tstate++; \
+		if(cpu->tstate_cb != NULL) cpu->tstate_cb(cpu, cpu->tstate_cb_user_data); \
+	}\
+}
+
+/*spend <amount> t-states (not affecting opcode-tstate counter,
+for using outside of certain opcode execution)*/
+#define TSTATES(amount) \
+{\
+	int nn;\
+	for(nn=0; nn < amount; nn++) \
+	{ \
 		cpu->tstate++; \
 		if(cpu->tstate_cb != NULL) cpu->tstate_cb(cpu, cpu->tstate_cb_user_data); \
 	}\
@@ -767,6 +786,13 @@
 
 #define DAA() \
 {\
+	const Z80EX_BYTE *tdaa = (daatab+(A+0x100*((F & 3) + ((F >> 2) & 4)))*2);\
+	F = *tdaa; A = *(tdaa + 1);\
+}
+
+/* old, non-exact version, from FUSE
+#define DAA() \
+{\
 	Z80EX_BYTE add = 0, carry = ( F & FLAG_C );\
 	if( ( F & FLAG_H ) || ( (A & 0x0f)>9 ) ) add=6;\
 	if( carry || (A > 0x9f ) ) add|=0x60;\
@@ -779,6 +805,7 @@
 	}\
 	F = ( F & ~( FLAG_C | FLAG_P) ) | carry | parity_table[A];\
 }
+*/
 
 #define EX(rp1,rp2) \
 {\

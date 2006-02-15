@@ -46,8 +46,9 @@ typedef struct _z80_cpu_context Z80EX_CONTEXT;
 /*called on each T-State [optional]*/
 typedef void (*z80ex_tstate_cb)(Z80EX_CONTEXT *cpu, void *user_data);
 
-/*read byte from memory <addr> -- called when RD & MREQ goes active*/
-typedef Z80EX_BYTE (*z80ex_mread_cb)(Z80EX_CONTEXT *cpu, Z80EX_WORD addr, void *user_data);
+/*read byte from memory <addr> -- called when RD & MREQ goes active.
+m1_state will be 1 if M1 signal is active*/
+typedef Z80EX_BYTE (*z80ex_mread_cb)(Z80EX_CONTEXT *cpu, Z80EX_WORD addr, int m1_state, void *user_data);
 
 /*write <value> to memory <addr> -- called when WR & MREQ goes active*/
 typedef void (*z80ex_mwrite_cb)(Z80EX_CONTEXT *cpu, Z80EX_WORD addr, Z80EX_BYTE value, void *user_data);
@@ -58,7 +59,7 @@ typedef Z80EX_BYTE (*z80ex_pread_cb)(Z80EX_CONTEXT *cpu, Z80EX_WORD port, void *
 /*write <value> to <port> -- called when WR & IORQ goes active*/
 typedef void (*z80ex_pwrite_cb)(Z80EX_CONTEXT *cpu, Z80EX_WORD port, Z80EX_BYTE value, void *user_data);
 
-/*read byte of interrupt vector*/
+/*read byte of interrupt vector -- called when M1 and IORQ goes active*/
 typedef Z80EX_BYTE (*z80ex_intread_cb)(Z80EX_CONTEXT *cpu, void *user_data);
 
 
@@ -102,22 +103,21 @@ extern Z80EX_WORD z80ex_get_reg(Z80EX_CONTEXT *cpu, Z80_REG_T reg);
 /*setting register value (for 1-byte registers, lower byte of <value> will be used)*/
 extern void z80ex_set_reg(Z80EX_CONTEXT *cpu, Z80_REG_T reg, Z80EX_WORD value);
 
-/*returns 1 if CPU doing HALT now*/
-extern int z80ex_is_halted(Z80EX_CONTEXT *cpu);
+/*returns 1 if CPU doing HALT instruction now*/
+extern int z80ex_doing_halt(Z80EX_CONTEXT *cpu);
 
 /*when called from callbacks, returns current T-state of executing opcode,
 else returns t-states taken by last opcode executed*/
 extern int z80ex_op_tstate(Z80EX_CONTEXT *cpu);
 
-/*======================================================*/
-/*functions for use in I/O callbacks:*/
-
-/*generate <w_states> Wait-states. (T-state callback will be called for each of them).*/
-extern void z80ex_io_w_states(Z80EX_CONTEXT *cpu, unsigned w_states);
+/*generate <w_states> Wait-states. (T-state callback will be called for each of them).
+must be used in t-state callback or I/O callbacks to simulate WAIT signal or disabled CLK*/ 
+extern void z80ex_w_states(Z80EX_CONTEXT *cpu, unsigned w_states);
 
 /*spend one T-state doing nothing (often IO devices don't handle data request on
-the first T-state, at which RD/WR goes active).*/
-extern void z80ex_io_next_t_state(Z80EX_CONTEXT *cpu);
+the first T-state, at which RD/WR goes active).
+for use in I/O callbacks*/
+extern void z80ex_next_t_state(Z80EX_CONTEXT *cpu);
 
 
 #ifdef __cplusplus

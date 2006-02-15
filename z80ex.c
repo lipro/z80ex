@@ -27,19 +27,6 @@
 #define temp_addr cpu->tmpaddr
 #define temp_word cpu->tmpword
 
-#define M1() (READ_OP())
-
-/*spend <amount> t-states*/
-#define TSTATES(amount) \
-{\
-	int nn;\
-	for(nn=0; nn < amount; nn++) \
-	{ \
-		cpu->tstate++; \
-		if(cpu->tstate_cb != NULL) cpu->tstate_cb(cpu, cpu->tstate_cb_user_data); \
-	}\
-}
-
 static int initialized=0;
 
 /* Whether a half carry occured or not can be determined by looking at
@@ -71,6 +58,7 @@ static void opc_CB(Z80EX_CONTEXT *cpu);
 static void opc_DDCB(Z80EX_CONTEXT *cpu);
 static void opc_FDCB(Z80EX_CONTEXT *cpu);
 
+#include "daa_table.c"
 #include "opcodes/opcodes_base.c"
 #include "opcodes/opcodes_dd.c"
 #include "opcodes/opcodes_fd.c"
@@ -86,7 +74,7 @@ static void opc_DD_or_FD(Z80EX_CONTEXT *cpu, Z80EX_BYTE pf/*0xdd or 0xfd*/)
 	
 	do
 	{
-		opcode=M1();
+		opcode=READ_OP_M1();
 		R++;
 	}
 	while((opcode | 0x20) == 0xFD); /*ignore repetitive DD/FD*/
@@ -124,7 +112,7 @@ static void opc_ED(Z80EX_CONTEXT *cpu)
 	z80ex_opcode_fn ofn;
 	Z80EX_BYTE opcode;
 	
-	opcode=M1();
+	opcode=READ_OP_M1();
 	R++;
 	ofn = opcodes_ed[opcode];
 	if(ofn == NULL) /*these are 8-tstates NOP*/
@@ -139,7 +127,7 @@ static void opc_ED(Z80EX_CONTEXT *cpu)
 static void opc_CB(Z80EX_CONTEXT *cpu)
 {
 	Z80EX_BYTE opcode;
-	opcode=M1();
+	opcode=READ_OP_M1();
 	R++;
 	opcodes_cb[opcode](cpu);
 }
@@ -150,7 +138,7 @@ static void opc_DDCB(Z80EX_CONTEXT *cpu)
 	Z80EX_BYTE opcode;
 	d=READ_OP();
 	temp_byte_s=(d & 0x80)? -(((~d) & 0x7f)+1): d;
-	opcode=M1(); /*R not increased on that M1*/
+	opcode=READ_OP_M1(); /*R not increased on that M1*/
 	opcodes_ddcb[opcode](cpu);	
 }
 
@@ -160,7 +148,7 @@ static void opc_FDCB(Z80EX_CONTEXT *cpu)
 	Z80EX_BYTE opcode;
 	d=READ_OP();
 	temp_byte_s=(d & 0x80)? -(((~d) & 0x7f)+1): d;
-	opcode=M1(); /*R not increased on that M1*/
+	opcode=READ_OP_M1(); /*R not increased on that M1*/
 	opcodes_fdcb[opcode](cpu);	
 }
 
@@ -193,7 +181,7 @@ LIB_EXPORT int z80ex_step(Z80EX_CONTEXT *cpu)
 	cpu->tstate=0;
 	cpu->op_tstate=0;
 	
-	opcode=M1(); /*fetch opcode*/
+	opcode=READ_OP_M1(); /*fetch opcode*/
 	R++; /*R increased by one on every first M1 cycle*/
 	opcodes_base[opcode](cpu);
 
@@ -307,7 +295,7 @@ LIB_EXPORT int z80ex_int(Z80EX_CONTEXT *cpu)
 	{
 		case IM0:
 			TSTATES(2); /*two extra wait-states*/
-			iv=M1();
+			iv=READ_OP_M1();
 			opcodes_base[iv](cpu);
 			break;
 		
@@ -339,12 +327,12 @@ LIB_EXPORT int z80ex_int(Z80EX_CONTEXT *cpu)
 	return(cpu->tstate);
 }
 
-LIB_EXPORT void z80ex_io_w_states(Z80EX_CONTEXT *cpu, unsigned w_states)
+LIB_EXPORT void z80ex_w_states(Z80EX_CONTEXT *cpu, unsigned w_states)
 {
 	TSTATES(w_states);
 }
 
-LIB_EXPORT void z80ex_io_next_t_state(Z80EX_CONTEXT *cpu)
+LIB_EXPORT void z80ex_next_t_state(Z80EX_CONTEXT *cpu)
 {
 	if(cpu->tstate_cb != NULL) cpu->tstate_cb(cpu, cpu->tstate_cb_user_data);
 	cpu->tstate++;
@@ -410,7 +398,7 @@ LIB_EXPORT int z80ex_op_tstate(Z80EX_CONTEXT *cpu)
 	return(cpu->tstate);
 }
 
-LIB_EXPORT int z80ex_is_halted(Z80EX_CONTEXT *cpu)
+LIB_EXPORT int z80ex_doing_halt(Z80EX_CONTEXT *cpu)
 {
 	return(cpu->halted);
 }

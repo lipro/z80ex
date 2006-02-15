@@ -1,0 +1,8 @@
+15.02.2006 - release 0.11
+- added M1 state to memory read callback parameters
+- fixed DAA emulation (using table found in SMT's UnrealSpeccy)
+
+11.02.2006
+- minor API changes
+
+10.02.2006 - release 0.1

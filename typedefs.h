@@ -62,12 +62,11 @@ struct _z80_cpu_context {
 	z80ex_intread_cb intread_cb;
 	void *intread_cb_user_data;
 	
-	/*other stuff (misc 'global vars' for processor instance)*/
+	/*other stuff*/
 	regpair tmpword;
 	regpair tmpaddr;
 	Z80EX_BYTE tmpbyte;
 	Z80EX_SIGNED_BYTE tmpbyte_s;
-	unsigned nn;
 };
 
 typedef void (*z80ex_opcode_fn) (Z80EX_CONTEXT *cpu);
