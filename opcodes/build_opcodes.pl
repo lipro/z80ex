@@ -70,8 +70,13 @@ sub convert_to_c
 	my $cmd_pwrite = 0; #cmd writes to port thru (port)
 	my $cmd_memmod = 0; #cmd modifyes data in memory, ie read-modify-write
 	my $cmd_is_16bit = 0;
-	my $cmd_cyclyc = 0;
+	my $cmd_cyclic = 0;
 	my $cmd_branch = 0;
+	my $cmd_memptr = 0;
+	######
+	
+	my $addr_mptr=0;
+	
 	######
 
 	if(!$$opc{'asm'}) {return("");}
@@ -116,7 +121,7 @@ sub convert_to_c
 
 	$pair[0]='IM_' if($pair[0] eq 'IM');
 
-	$cmd_cyclyc=1 if($pair[0] =~ /^(LDIR|LDDR|OTIR|OTDR|INIR|INDR|CPDR|CPIR|DJNZ)$/);
+	$cmd_cyclic=1 if($pair[0] =~ /^(LDIR|LDDR|OTIR|OTDR|INIR|INDR|CPDR|CPIR|DJNZ)$/);
 
 	if($pair[0] eq 'shift')
 	{
@@ -142,6 +147,11 @@ sub convert_to_c
 	{
 		my $dbus_arg=0; #number of argument that references memory, or 0
 		@arguments = split /,/,$pair[1]; #split args
+
+		if(($pair[0] eq 'JP') and ($arguments[0] =~ /^(HL|IX|IY)$/))
+		{
+			$pair[0] = 'JP_NO_MPTR';
+		}
 
 		#support for ld a, rlc(ix+d) -alike constructs
 		if($pair[2])
@@ -171,15 +181,42 @@ sub convert_to_c
 				{
 					$cmd_mwrite = 1;
 				}
-				elsif($dbus_arg == 1) #first arg
+				elsif($dbus_arg == 1) #first arg is (ptr)
 				{
 					die ("LD with one arg!") if(!$arguments[1]);
 					$cmd_mwrite = 1;
 					$cmd_is_16bit=is_arg_16bit($arguments[1]);
+					
+					if(($arguments[0] =~ /^\((BC|DE|nnnn)\)$/) and ($arguments[1] eq 'A'))
+					{
+						#ld (nnnn|BC|DE), A
+						$pair[0]='LD_A_TO_ADDR_MPTR';
+						$cmd_memptr=1;
+					}
+					elsif(($arguments[0] =~ /^\(nnnn\)$/) and ($arguments[1] =~ /^(BC|DE|HL|IX|IY)$/))
+					{
+						#ld (nnnn),rp
+						$pair[0]='LD_RP_TO_ADDR_MPTR_';
+						$cmd_memptr=1;
+					}
 				}
 				else
 				{
 					$cmd_is_16bit=is_arg_16bit($arguments[0]);
+					
+					if(($arguments[0] eq 'A') and ($arguments[1] =~ /^\((BC|DE|nnnn)\)$/))
+					{
+						#ld a,(BC|DE|nnnn)
+						$pair[0]='LD_A_FROM_ADDR_MPTR';
+						$cmd_memptr=1;
+					}
+					elsif(($arguments[0] =~ /^(BC|DE|HL|IX|IY)$/) and ($arguments[1] =~ /^\(nnnn\)$/))
+					{
+						#ld rp,(nnnn)
+						$pair[0]='LD_RP_FROM_ADDR_MPTR_';
+						$cmd_memptr=1;
+					}
+					
 				}
 			}
 			elsif($pair[0] eq 'EX')
@@ -188,6 +225,7 @@ sub convert_to_c
 				$cmd_mwrite = 1;
 				$cmd_is_16bit = 1;
 				$cmd_memmod = 1;
+				$pair[0]='EX_MPTR';
 			}
 			elsif($pair[0] =~ /^(ADD|SUB|ADC|SBC)$/)
 			{
@@ -253,11 +291,11 @@ sub convert_to_c
 		if($cmd_branch)
 		{
 			$out.= get_flag_co($arguments[0])." {\n";
-			#$pair[0] = $pair[0].'_COND';
 			splice(@arguments,0,1);
 		}
 				
 		#process the rest args (numbers or registers)
+		
 		my $nn=1;
 		my $add_op=0;
 		my $add_op_arg='';
@@ -311,6 +349,8 @@ sub convert_to_c
 				$head.="	temp_word.b.l=READ_OP();\n";
 				$head.="	temp_word.b.h=READ_OP();\n";				
 				$arg_str.="temp_word.w";
+				
+				$addr_mptr="temp_word.w" if($pair[0] =~/^(JP|JR|CALL)$/);
 			}			
 			elsif($arg =~ /^\(nnnn\)$/) #memory referenced by word
 			{
@@ -318,6 +358,8 @@ sub convert_to_c
 
 				$head.="	temp_addr.b.l=READ_OP();\n";						
 				$head.="	temp_addr.b.h=READ_OP();\n";						
+
+				$addr_mptr = "temp_addr.w";
 
 				if($cmd_is_16bit)
 				{
@@ -366,7 +408,8 @@ sub convert_to_c
 				die "err22" if(!$dbus_arg or $dbus_arg!=$nn);
 				die ("(nn) notation, but it isnt 'out' or 'in' command -- $pair[0]") if(!$cmd_pwrite and ($pair[0] !~ /^(IN|IN_F)$/));
 				
-				$arg_str.="(READ_OP() + ( A << 8 ))"
+				$head.="	temp_word.w=(READ_OP() + ( A << 8 ));\n";
+				$arg_str.="temp_word.w";
 				
 			}
 			elsif($arg eq '(C)') #dealing with port
@@ -383,7 +426,7 @@ sub convert_to_c
 				(my $ref) = $arg =~ /^\(([\w\+]+)\)$/;			
 				die "err66" if(!$ref);
 				
-				if($ref =~ /\+/) # (regpair + dd)
+				if($ref =~ /\+/) # (IX/IY + dd)
 				{
 					#взять число и приписать его к ref вместо dd
 					if(($def ne 'ddcb') and ($def ne 'fdcb'))
@@ -395,8 +438,24 @@ sub convert_to_c
 					(my $regg) = $ref =~ /^(\w+)\+\w+$/;
 					die "err 889 (ref=$ref)" if(!$regg);
 					$ref = $regg.'+temp_byte_s';
+					
+					if($pair[0] eq 'BIT') #BIT n,(INDEX+D) is a special case...
+					{
+						$pair[0]="BIT_MPTR";
+					}
+					
+					$head.="	MEMPTR=($ref);\n";
+				}
+				else
+				{
+					if(($ref eq 'HL') and ($pair[0] eq 'BIT')) #BIT n,(HL) is a special case...
+					{
+						$pair[0]="BIT_MPTR";
+					}
 				}
 				
+				$addr_mptr = "($ref)";
+
 				#$head.="			temp_addr.w=$ref;\n";						
 
 				if($cmd_is_16bit)
@@ -407,8 +466,8 @@ sub convert_to_c
 					{
 						die "2nd shift-op for 16bit cmd" if($add_op);
 					
-						$head.="	".$readbyte."temp_word.b.l,$ref,".next_t(\@rr).");\n";
-						$head.="	".$readbyte."temp_word.b.h,$ref+1,".next_t(\@rr).");\n";					
+						$head.="	".$readbyte."temp_word.b.l,($ref),".next_t(\@rr).");\n";
+						$head.="	".$readbyte."temp_word.b.h,($ref+1),".next_t(\@rr).");\n";					
 					}
 
 					if($cmd_mwrite)
@@ -416,8 +475,8 @@ sub convert_to_c
 						die "wr isnt given for 16bit memory-write op" if(!$$opc{wr});
 
 
-						$foot.="	".$writebyte."$ref,temp_word.b.l,".next_t(\@ww).");\n";
-						$foot.="	".$writebyte."$ref+1,temp_word.b.h,".next_t(\@ww).");\n";
+						$foot.="	".$writebyte."($ref),temp_word.b.l,".next_t(\@ww).");\n";
+						$foot.="	".$writebyte."($ref+1),temp_word.b.h,".next_t(\@ww).");\n";
 					}
 				}
 				else
@@ -426,7 +485,7 @@ sub convert_to_c
 					
 					if(!$cmd_mwrite or $cmd_memmod)
 					{
-						$head.="	".$readbyte."temp_byte,$ref,".next_t(\@rr).");\n";
+						$head.="	".$readbyte."temp_byte,($ref),".next_t(\@rr).");\n";
 						$head.="	$add_op(".$add_op_arg."temp_byte);\n" if($add_op);
 
 					}					
@@ -435,11 +494,11 @@ sub convert_to_c
 					{
 						if($add_op)
 						{
-							$head.="	".$readbyte."temp_byte,$ref,".next_t(\@rr).");\n";
+							$head.="	".$readbyte."temp_byte,($ref),".next_t(\@rr).");\n";
 							$head.="	$add_op(".$add_op_arg."temp_byte);\n" if($add_op);
 						}
 					
-						$foot.="	".$writebyte."$ref,temp_byte,".next_t(\@ww).");\n";
+						$foot.="	".$writebyte."($ref),temp_byte,".next_t(\@ww).");\n";
 					}
 				}
 			}			
@@ -453,7 +512,13 @@ sub convert_to_c
 		}
 	}
 
-	if($pair[0] =~ /(LD|ADD|ADC|SBC|INC|DEC)/)
+	if($cmd_memptr) #pass adress to commands that modifyes MEMPTR register
+	{
+		$arg_str.= ', ' if($arg_str ne '');
+		$arg_str.= $addr_mptr;
+	}
+
+	if(($pair[0] =~ /^(LD|ADD|ADC|SBC|INC|DEC)$/) or ($pair[0] =~ /^LD_/))
 	{
 		foreach my $aa (@arguments)
 		{
@@ -468,7 +533,7 @@ sub convert_to_c
 		
 	######## give timing info for some cmds 
 	
-	if($cmd_cyclyc) #give cyclyc commands full timing info
+	if($cmd_cyclic) #give ciclyc commands full timing info
 	{
 		die("block/cycle command, but only one timing given!") if(!$tst[0] or !$tst[0]);
 		$arg_str.= ', ' if($arg_str ne '');
@@ -512,11 +577,18 @@ sub convert_to_c
 	if($cmd_branch)
 	{
 		die "branching cmd, two timings must be given!" if(!$tst[0] or !$tst[1]);
-		$foot.="	T_WAIT_UNTIL($tst[1]);\n	}\n	else { T_WAIT_UNTIL($tst[0]);}\n";
+		$foot.="	T_WAIT_UNTIL($tst[1]);\n	}\n	else { T_WAIT_UNTIL($tst[0]);";
+		
+		if($cmd_branch and $pair[0] =~ /^(JP|CALL)$/)
+		{
+			$foot.="MEMPTR=$addr_mptr;"
+		}
+		
+		$foot.="}\n";
 	}
 	else
 	{
-		$foot.="	T_WAIT_UNTIL($tst[0]);\n" if(!$cmd_cyclyc);
+		$foot.="	T_WAIT_UNTIL($tst[0]);\n" if(!$cmd_cyclic);
 	}
 
 	$foot.="	return;";

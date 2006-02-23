@@ -7,8 +7,8 @@
  *
  */
 
-#ifndef _Z80EX_m_HH
-#define _Z80EX_m_HH
+#ifndef _Z80EX_H_INCLUDED
+#define _Z80EX_H_INCLUDED
 
 #ifdef __GNUC__
 #include <stdint.h>
@@ -18,15 +18,15 @@ typedef uint16_t Z80EX_WORD;
 typedef uint32_t Z80EX_DWORD;
 #else
 #ifdef _MSC_VER
-typedef __int8 Z80EX_BYTE;
-typedef char Z80EX_SIGNED_BYTE;
-typedef __int16 Z80EX_WORD;
-typedef __int32 Z80EX_DWORD;
+typedef unsigned __int8 Z80EX_BYTE;
+typedef signed __int8 Z80EX_SIGNED_BYTE;
+typedef unsigned __int16 Z80EX_WORD;
+typedef unsigned __int32 Z80EX_DWORD;
 #else
 typedef unsigned char Z80EX_BYTE;
-typedef char Z80EX_SIGNED_BYTE;
+typedef signed char Z80EX_SIGNED_BYTE;
 typedef unsigned short Z80EX_WORD;
-typedef unsigned Z80EX_DWORD;
+typedef unsigned int Z80EX_DWORD;
 #endif
 #endif
 

@@ -1,19 +1,21 @@
 Z80~Ex
 
 ZiLOG Z80 CPU emulator
---------------------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~
 
 Features:
+---------
 
 - precise opcode emulation (documented & undocumented)
 - exact timings for each opcode (including I/O operations)
 - full support for all interrupt modes
-- allows simultaneous operation of several virtual CPUs
+- ability to create several virtual CPUs
 - written in pure ANSI C
 - compiles as a library, which may be used via simple callback-based API
 
 
 Building and installation (*):
+------------------------------
 
 for build using GNU C (GCC - unix, mingw/cygwin - Win32, DJGPP - DOS(**)),
 type 'gmake'. static and shared libraries will appear in "./lib".
@@ -33,12 +35,14 @@ shared libraries
 
 
 Usage:
+------
 
 include <z80ex.h> in your sources,
-and link with "libz80ex" (-lz80ex).
+link with "libz80ex" (-lz80ex).
 
-no API documentation written yet, see comments in "z80ex.h".
+for API documentation see "z80ex.h".
 
 
+_____________________
 yours, Boo-boo
 boo_boo(^at^)inbox.ru

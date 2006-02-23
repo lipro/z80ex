@@ -1,6 +1,20 @@
+23.02.2006 - release 0.12
+- fixed timings for LD IIh/IIl,nn (thanks to Restorer)
+
+22.02.2006
+- fixed timings for IIh/IIl undocumented opcodes
+
+18.02.2006
+- fixed undocumented flag effects for BIT n,(IX+d)
+- undocumented flag effects implemented for block I/O operations 
+- undocumented internal register MEMPTR emulation (incomplete, more info needed) 
+
+16.02.2006
+- fixed sized data types declaration for MSVC (thanks to SMT)
+
 15.02.2006 - release 0.11
-- added M1 state to memory read callback parameters
-- fixed DAA emulation (using table found in SMT's UnrealSpeccy)
+- added M1 signal state to memory read callback parameters
+- DAA emulation has been fixed (now uses table from SMT's UnrealSpeccy)
 
 11.02.2006
 - minor API changes

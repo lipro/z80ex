@@ -4,19 +4,24 @@
 #################################################################
 
 INSTALL_PREFIX := /usr/local
-CC := gcc -ansi -Wall -pipe -O2 -I. -I./include
+CC := gcc -ansi -pedantic -Wall -pipe -O2 -I. -I./include
 LINKER := gcc
+
+#little/big endian, choose one:
+ENDIANNESS := WORDS_LITTLE_ENDIAN
+#ENDIANNESS := WORDS_BIG_ENDIAN
+
 
 #################################################################
 
 PROJ := libz80ex
-VERSION := 0.11
+VERSION := 0.12
 API_V := 0
 
 c_files:= z80ex.c
 
 %.o : %.c
-	${CC} -c -o $@ $<	
+	${CC} -D$(ENDIANNESS) -c -o $@ $<	
 
 .PHONY : all
 all:: static shared
@@ -47,7 +52,7 @@ install:
 dist: clean
 	rm -rf ./libz80ex-${VERSION}
 	ln -s ./ ./libz80ex-${VERSION}
-	tar --exclude libz80ex-${VERSION}/libz80ex-${VERSION} -hcf - ./libz80ex-${VERSION}/ | gzip -f9 > libz80ex-${VERSION}.tar.gz
+	tar --exclude libz80ex-${VERSION}/libz80ex-${VERSION} --exclude libz80ex-${VERSION}/libz80ex-${VERSION}.tar.gz -hcf - ./libz80ex-${VERSION}/ | gzip -f9 > libz80ex-${VERSION}.tar.gz
 	rm -rf ./libz80ex-${VERSION}
 
 #EOF

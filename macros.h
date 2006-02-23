@@ -9,8 +9,8 @@
 
 /*most of the code in this file is based on z80 emulation core of FUSE project (http://fuse-emulator.sourceforge.net)*/
 
-#ifndef _Z80EX_MACROS_H
-#define _Z80EX_MACROS_H
+#ifndef _Z80EX_MACROS_H_INCLUDED
+#define _Z80EX_MACROS_H_INCLUDED
 
 /* Macros used for accessing the registers */
 #define A   cpu->af.b.h
@@ -68,6 +68,11 @@
 #define IFF1 cpu->iff1
 #define IFF2 cpu->iff2
 #define IM   cpu->im
+
+#define MEMPTRh cpu->memptr.b.h
+#define MEMPTRl cpu->memptr.b.l
+#define MEMPTR cpu->memptr.w
+
 
 /* The flags */
 
@@ -164,6 +169,7 @@ for using outside of certain opcode execution)*/
 	Z80EX_BYTE lookup = ( (        HL & 0x8800 ) >> 11 ) | \
 			    ( (   (value) & 0x8800 ) >> 10 ) | \
 			    ( ( add16temp & 0x8800 ) >>  9 );  \
+	MEMPTR=hl+1;\
 	HL = add16temp;\
 	F = ( add16temp & 0x10000 ? FLAG_C : 0 )|\
 		overflow_add_table[lookup >> 4] |\
@@ -190,6 +196,7 @@ for using outside of certain opcode execution)*/
 	Z80EX_BYTE lookup = ( (  (value1) & 0x0800 ) >> 11 ) | \
 			    ( (  (value2) & 0x0800 ) >> 10 ) | \
 			    ( ( add16temp & 0x0800 ) >>  9 );  \
+	MEMPTR=value1+1;\
 	(value1) = add16temp;\
 	F = ( F & ( FLAG_V | FLAG_Z | FLAG_S ) ) |\
 		( add16temp & 0x10000 ? FLAG_C : 0 )|\
@@ -197,21 +204,35 @@ for using outside of certain opcode execution)*/
 		halfcarry_add_table[lookup];\
 }
 
-/* This may look fairly inefficient, but the (gcc) optimiser does the
-   right thing assuming it's given a constant for 'bit' */
 #define BIT( bit, value ) \
 { \
 	F = ( F & FLAG_C ) | FLAG_H; \
-	if( ! ( (value) & ( 0x01 << (bit) ) ) ) F |= FLAG_P | FLAG_Z; \
-	if( (bit) == 3 && (value) & 0x08 ) F |= FLAG_3; \
-	if( (bit) == 5 && (value) & 0x20 ) F |= FLAG_5; \
-	if( (bit) == 7 && (value) & 0x80 ) F |= FLAG_S; \
+	if( !((value) & ( 0x01 << (bit)))) F |= FLAG_P | FLAG_Z; \
+	else \
+	{\
+		if( (bit) == 3) F |= FLAG_3; \
+		if( (bit) == 5) F |= FLAG_5; \
+		if( (bit) == 7) F |= FLAG_S; \
+	}\
+}
+
+/*BIT n,(IX+d/IY+d) and BIT n,(HL)*/
+#define BIT_MPTR( bit, value) \
+{ \
+	F = ( F & FLAG_C ) | FLAG_H; \
+	if( !((value) & ( 0x01 << (bit)))) F |= FLAG_P | FLAG_Z; \
+	else \
+	{\
+		if( (bit) == 7) F |= FLAG_S; \
+	}\
+	F |= (MEMPTRh) & 0x28;\
 }
 
 #define CALL(addr, wr1, wr2) \
 {\
 	PUSH(PC,wr1,wr2); \
 	PC=addr; \
+	MEMPTR=addr;\
 }
 
 #define CP(value)\
@@ -256,19 +277,54 @@ for using outside of certain opcode execution)*/
 	dst=src; \
 }
 
+/*ld (nnnn|BC|DE), A*/
+#define LD_A_TO_ADDR_MPTR(dst, src, addr) \
+{\
+	dst=src; \
+	MEMPTR=A*0x100;\
+}
+
+/*ld a,(BC|DE|nnnn)*/
+#define LD_A_FROM_ADDR_MPTR(dst, src, addr) \
+{\
+	dst=src; \
+	MEMPTR=addr+1;\
+}
+
 #define LD16(dst, src) \
 {\
 	dst=src; \
 }
 
+/*ld (nnnn),BC|DE|HL|IX|IY*/
+#define LD_RP_TO_ADDR_MPTR_16(dst, src, addr) \
+{\
+	dst=src; \
+	MEMPTR=addr+1;\
+}
+
+/*ld BC|DE|HL|IX|IY,(nnnn)*/
+#define LD_RP_FROM_ADDR_MPTR_16(dst, src, addr) \
+{\
+	dst=src; \
+	MEMPTR=addr+1;\
+}
+
+#define JP_NO_MPTR(addr) \
+{ \
+	PC=addr; \
+}
+
 #define JP(addr) \
 { \
 	PC=addr; \
+	MEMPTR=addr;\
 }
 
 #define JR(offset) \
 {\
 	PC+=offset; \
+	MEMPTR=PC;\
 }
 
 #define OR(value)\
@@ -280,12 +336,14 @@ for using outside of certain opcode execution)*/
 #define OUT(port,reg, wr) \
 {\
 	WRITE_PORT(port,reg,wr); \
+	MEMPTR=port+1;\
 }
 
 #define IN(reg,port,rd) \
 {\
 	READ_PORT(reg,port,rd); \
 	F = ( F & FLAG_C) | sz53p_table[(reg)];\
+	MEMPTR=port+1;\
 }
 
 #define IN_F(port, rd) \
@@ -315,6 +373,7 @@ for using outside of certain opcode execution)*/
 #define RET(rd1, rd2) \
 {\
 	POP(PC, rd1, rd2);\
+	MEMPTR=PC;\
 }
 
 #define RL(value)\
@@ -348,6 +407,7 @@ for using outside of certain opcode execution)*/
 {\
 	PUSH(PC, w1, w2);\
 	PC=(value);\
+	MEMPTR=PC;\
 }
 
 #define SBC(a, value)\
@@ -368,6 +428,7 @@ for using outside of certain opcode execution)*/
 	Z80EX_BYTE lookup = ( (        HL & 0x8800 ) >> 11 ) | \
 			    ( (   (value) & 0x8800 ) >> 10 ) | \
 			    ( ( sub16temp & 0x8800 ) >>  9 );  \
+	MEMPTR=hl+1;\
 	HL = sub16temp;\
 	F = ( sub16temp & 0x10000 ? FLAG_C : 0 ) |\
 	FLAG_N | overflow_sub_table[lookup >> 4] |\
@@ -429,6 +490,7 @@ for using outside of certain opcode execution)*/
 	WRITE_MEM(HL,  ( A << 4 ) | ( bytetemp >> 4 ) ,wr);\
 	A = ( A & 0xf0 ) | ( bytetemp & 0x0f );\
 	F = ( F & FLAG_C ) | sz53p_table[A];\
+	MEMPTR=HL+1;\
 }
 
 #define RLD(rd, wr) \
@@ -438,6 +500,7 @@ for using outside of certain opcode execution)*/
 	WRITE_MEM(HL, (bytetemp << 4 ) | ( A & 0x0f ) ,wr);\
 	A = ( A & 0xf0 ) | ( bytetemp >> 4 );\
 	F = ( F & FLAG_C ) | sz53p_table[A];\
+	MEMPTR=HL+1;\
 }
 
 
@@ -511,25 +574,43 @@ for using outside of certain opcode execution)*/
 	F |= ( bytetemp & FLAG_3 ) | ( (bytetemp&0x02) ? FLAG_5 : 0 );\
 }
 
-/* C,H and P/V flags not implemented */
+/*undocumented flag effects for block output operations*/
+#define OUT_BL(pbyte) \
+{\
+	Z80EX_BYTE kval;\
+	kval=pbyte+L;\
+	if((pbyte+L) > 255) F |= (FLAG_C | FLAG_H);\
+	F |= parity_table[((kval & 7) ^ B)];\
+}
+
+/*undocumented flag effects for block input operations*/
+#define IN_BL(pbyte, c_add) \
+{\
+	Z80EX_BYTE kval;\
+	kval=pbyte+((C+(c_add)) & 0xff);\
+	if((pbyte+((C+(c_add)) & 0xff)) > 255) F |= (FLAG_C | FLAG_H);\
+	F |= parity_table[((kval & 7) ^ B)];\
+}
+
 #define INI(rd, wr) \
 {\
-	Z80EX_WORD initemp;\
+	Z80EX_BYTE initemp;\
 	READ_PORT(initemp, BC, rd);\
 	WRITE_MEM( HL, initemp, wr );\
 	B--; HL++;\
 	F = ( initemp & 0x80 ? FLAG_N : 0 ) | sz53_table[B];\
+	IN_BL(initemp,1)\
 }
 
-/* C,H and P/V flags not implemented */
 #define OUTI(rd, wr) \
 {\
-	Z80EX_WORD outitemp;\
+	Z80EX_BYTE outitemp;\
 	READ_MEM(outitemp, HL, rd);\
 	B--;	\
 	WRITE_PORT(BC,outitemp,wr);\
 	HL++;\
 	F = (outitemp & 0x80 ? FLAG_N : 0 ) | sz53_table[B];\
+	OUT_BL(outitemp);\
 }
 
 #define LDD(rd, wr) \
@@ -560,25 +641,25 @@ for using outside of certain opcode execution)*/
 	F |= ( bytetemp & FLAG_3 ) | ( (bytetemp&0x02) ? FLAG_5 : 0 );\
 }
 
-/* C,H and P/V flags not implemented */
 #define IND(rd,wr) \
 {\
-	Z80EX_WORD initemp;\
+	Z80EX_BYTE initemp;\
 	READ_PORT(initemp, BC, rd);\
 	WRITE_MEM( HL, initemp, wr );\
 	B--; HL--;\
 	F = ( initemp & 0x80 ? FLAG_N : 0 ) | sz53_table[B];\
+	IN_BL(initemp,-1)\
 }
 
-/* C,H and P/V flags not implemented */
 #define OUTD(rd, wr) \
 {\
-	Z80EX_WORD outitemp;\
+	Z80EX_BYTE outitemp;\
 	READ_MEM(outitemp, HL, rd);\
 	B--;\
 	WRITE_PORT(BC,outitemp,wr);\
 	HL--;\
 	F = (outitemp & 0x80 ? FLAG_N : 0 ) | sz53_table[B];\
+	OUT_BL(outitemp);\
 }
 
 #define LDIR(t1,t2,rd,wr) \
@@ -624,10 +705,9 @@ for using outside of certain opcode execution)*/
 	}\
 }
 
-/* C,H and P/V flags not implemented */
 #define INIR(t1,t2,rd,wr) \
 {\
-	Z80EX_WORD initemp;\
+	Z80EX_BYTE initemp;\
 	READ_PORT(initemp, BC, rd);\
 	WRITE_MEM( HL, initemp, wr);\
 	B--; HL++;\
@@ -640,12 +720,12 @@ for using outside of certain opcode execution)*/
 	{\
 		T_WAIT_UNTIL(t1);\
 	}\
+	IN_BL(initemp,1)\
 }
 
-/* C,H and P/V flags not implemented */
 #define OTIR(t1,t2,rd,wr) \
 {\
-	Z80EX_WORD outitemp;\
+	Z80EX_BYTE outitemp;\
 	READ_MEM(outitemp, HL, rd);\
 	B--;\
 	WRITE_PORT(BC, outitemp, wr);\
@@ -659,6 +739,7 @@ for using outside of certain opcode execution)*/
 	{\
 		T_WAIT_UNTIL(t1);\
 	}\
+	OUT_BL(outitemp);\
 }
 
 #define LDDR(t1,t2,rd,wr) \
@@ -704,10 +785,9 @@ for using outside of certain opcode execution)*/
 	}\
 }
 
-/* C,H and P/V flags not implemented */
 #define INDR(t1,t2,rd,wr) \
 {\
-	Z80EX_WORD initemp;\
+	Z80EX_BYTE initemp;\
 	READ_PORT(initemp, BC, rd);\
 	WRITE_MEM( HL, initemp, wr );\
 	B--; HL--;\
@@ -720,12 +800,12 @@ for using outside of certain opcode execution)*/
 	{\
 		T_WAIT_UNTIL(t1);\
 	}\
+	IN_BL(initemp,-1)\
 }
 
-/* C,H and P/V flags not implemented */
 #define OTDR(t1,t2,rd,wr) \
 {\
-	Z80EX_WORD outitemp;\
+	Z80EX_BYTE outitemp;\
 	READ_MEM(outitemp, HL, rd);\
 	B--;\
 	WRITE_PORT(BC,outitemp,wr);\
@@ -739,6 +819,7 @@ for using outside of certain opcode execution)*/
 	{\
 		T_WAIT_UNTIL(t1);\
 	}\
+	OUT_BL(outitemp);\
 }
 
 #define RLCA() \
@@ -760,6 +841,7 @@ for using outside of certain opcode execution)*/
 	B--;\
 	if(B) {\
 		PC += offset;\
+		MEMPTR=PC;\
 		T_WAIT_UNTIL(t2);\
 	}\
 	else\
@@ -810,6 +892,12 @@ for using outside of certain opcode execution)*/
 #define EX(rp1,rp2) \
 {\
 	Z80EX_WORD wordtemp=rp1; rp1=rp2; rp2=wordtemp;\
+}
+
+#define EX_MPTR(rp1,rp2) \
+{\
+	Z80EX_WORD wordtemp=rp1; rp1=rp2; rp2=wordtemp;\
+	MEMPTR=wordtemp;\
 }
 
 #define CPL() \

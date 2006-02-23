@@ -7,8 +7,8 @@
  *
  */
 
-#ifndef _Z80_TYPEDEFS_H__
-#define _Z80_TYPEDEFS_H__
+#ifndef _Z80_TYPEDEFS_H_INCLUDED
+#define _Z80_TYPEDEFS_H_INCLUDED
 
 struct _z80_cpu_context;
 typedef struct _z80_cpu_context Z80EX_CONTEXT;
@@ -18,7 +18,7 @@ typedef struct _z80_cpu_context Z80EX_CONTEXT;
 
 /* Union allowing a register pair to be accessed as bytes or as a word */
 typedef union {
-#ifdef WORDS_BIGENDIAN
+#ifdef WORDS_BIG_ENDIAN
   struct { Z80EX_BYTE h,l; } b;
 #else
   struct { Z80EX_BYTE l,h; } b;
@@ -38,6 +38,7 @@ struct _z80_cpu_context {
 	Z80EX_BYTE r7; /* The high bit of the R register */
 	regpair sp,pc;
 	Z80EX_BYTE iff1, iff2; /*interrupt flip-flops*/
+	regpair memptr; /*undocumented internal register*/
 	IM_MODE im;
 	int halted;
 
