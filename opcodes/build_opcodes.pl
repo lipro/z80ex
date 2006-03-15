@@ -40,7 +40,7 @@ sub is_arg_16bit
 	my $arg = shift;
 	my $res=0;
 
-	$res=1 if((length($arg) == 2) and ($arg !~ /^\w+[Hh]/) and ($arg ne 'nn'));
+	$res=1 if((length($arg) == 2) and ($arg !~ /^\w+[Hh]/) and ($arg ne '#'));
 
 #print "checking $arg gives $res\n";	
 	return($res);
@@ -165,7 +165,7 @@ sub convert_to_c
 		foreach my $argg (@arguments)
 		{
 #print "$arg--";		
-			$dbus_arg = $nnn if($argg =~ /^\([\w\+]+\)$/);
+			$dbus_arg = $nnn if($argg =~ /^\([\w\+\@\#\$]+\)$/);
 			$nnn++;
 		}
 #print "\n";		
@@ -187,13 +187,13 @@ sub convert_to_c
 					$cmd_mwrite = 1;
 					$cmd_is_16bit=is_arg_16bit($arguments[1]);
 					
-					if(($arguments[0] =~ /^\((BC|DE|nnnn)\)$/) and ($arguments[1] eq 'A'))
+					if(($arguments[0] =~ /^\((BC|DE|\@)\)$/) and ($arguments[1] eq 'A'))
 					{
 						#ld (nnnn|BC|DE), A
 						$pair[0]='LD_A_TO_ADDR_MPTR';
 						$cmd_memptr=1;
 					}
-					elsif(($arguments[0] =~ /^\(nnnn\)$/) and ($arguments[1] =~ /^(BC|DE|HL|IX|IY)$/))
+					elsif($arguments[0] =~ /^\(\@\)$/)
 					{
 						#ld (nnnn),rp
 						$pair[0]='LD_RP_TO_ADDR_MPTR_';
@@ -204,13 +204,13 @@ sub convert_to_c
 				{
 					$cmd_is_16bit=is_arg_16bit($arguments[0]);
 					
-					if(($arguments[0] eq 'A') and ($arguments[1] =~ /^\((BC|DE|nnnn)\)$/))
+					if(($arguments[0] eq 'A') and ($arguments[1] =~ /^\((BC|DE|\@)\)$/))
 					{
 						#ld a,(BC|DE|nnnn)
 						$pair[0]='LD_A_FROM_ADDR_MPTR';
 						$cmd_memptr=1;
 					}
-					elsif(($arguments[0] =~ /^(BC|DE|HL|IX|IY)$/) and ($arguments[1] =~ /^\(nnnn\)$/))
+					elsif($arguments[1] =~ /^\(\@\)$/)
 					{
 						#ld rp,(nnnn)
 						$pair[0]='LD_RP_FROM_ADDR_MPTR_';
@@ -338,13 +338,13 @@ sub convert_to_c
 				$arg_str.="temp_byte_s";
 			}
 
-			elsif($arg =~ /^nn$/) #byte
+			elsif($arg =~ /^\#$/) #byte
 			{
 				$head.="	temp_byte=READ_OP();\n";
 				$arg_str.="temp_byte";
 			}
 			
-			elsif($arg =~ /^nnnn$/) #word
+			elsif($arg =~ /^\@$/) #word
 			{
 				$head.="	temp_word.b.l=READ_OP();\n";
 				$head.="	temp_word.b.h=READ_OP();\n";				
@@ -352,7 +352,7 @@ sub convert_to_c
 				
 				$addr_mptr="temp_word.w" if($pair[0] =~/^(JP|JR|CALL)$/);
 			}			
-			elsif($arg =~ /^\(nnnn\)$/) #memory referenced by word
+			elsif($arg =~ /^\(\@\)$/) #memory referenced by word
 			{
 				die "err22" if(!$dbus_arg or $dbus_arg!=$nn);
 
@@ -403,13 +403,15 @@ sub convert_to_c
 					}
 				}
 			}
-			elsif($arg =~ /^\(nn\)$/) #dealing with port
+			elsif($arg =~ /^\(\#\)$/) #dealing with port
 			{
 				die "err22" if(!$dbus_arg or $dbus_arg!=$nn);
-				die ("(nn) notation, but it isnt 'out' or 'in' command -- $pair[0]") if(!$cmd_pwrite and ($pair[0] !~ /^(IN|IN_F)$/));
+				die ("(\#) notation, but it isnt 'out' or 'in' command -- $pair[0]") if(!$cmd_pwrite and ($pair[0] !~ /^(IN|IN_F)$/));
 				
 				$head.="	temp_word.w=(READ_OP() + ( A << 8 ));\n";
 				$arg_str.="temp_word.w";
+				
+				$pair[0].='_A'; # IN A,(nn) and OUT (nn),A behaves somewhat differently
 				
 			}
 			elsif($arg eq '(C)') #dealing with port
@@ -419,27 +421,27 @@ sub convert_to_c
 
 				$arg_str.= "BC";
 			}
-			elsif($arg =~ /^\([\w\+]+\)$/) #memory adressing by regpair (or regpair+d)
+			elsif($arg =~ /^\([\w\+\$]+\)$/) #memory adressing by regpair (or regpair+d)
 			{
 				die "err22: dbus_arg=$dbus_arg" if(!$dbus_arg or $dbus_arg!=$nn);
 					
-				(my $ref) = $arg =~ /^\(([\w\+]+)\)$/;			
+				(my $ref) = $arg =~ /^\(([\w\+\$]+)\)$/;			
 				die "err66" if(!$ref);
 				
-				if($ref =~ /\+/) # (IX/IY + dd)
+				if($ref =~ /\+/) # (IX/IY + $)
 				{
-					#взять число и приписать его к ref вместо dd
+					#взять число и приписать его к ref вместо $
 					if(($def ne 'ddcb') and ($def ne 'fdcb'))
 					{
 						$head.="	temp_byte=READ_OP();\n";
 						$head.="	temp_byte_s=(temp_byte & 0x80)? -(((~temp_byte) & 0x7f)+1): temp_byte;\n";
 					}
 					
-					(my $regg) = $ref =~ /^(\w+)\+\w+$/;
+					(my $regg) = $ref =~ /^(\w+)\+\$$/;
 					die "err 889 (ref=$ref)" if(!$regg);
 					$ref = $regg.'+temp_byte_s';
 					
-					if($pair[0] eq 'BIT') #BIT n,(INDEX+D) is a special case...
+					if($pair[0] eq 'BIT') #BIT n,(INDEX+$) is a special case...
 					{
 						$pair[0]="BIT_MPTR";
 					}
@@ -597,18 +599,23 @@ sub convert_to_c
 }
 
 
-
+sub convert_to_c_disasm
+{
+	
+}
 
 
 sub process_ofile
 {
 	my $fname = shift;
 	my $def = shift;
+	my $disasmt = shift;	
 	my $to_file = shift;
 	my $fnname;
 	my $pair;
 	
 	my @tbl=();
+	my @tbl_dasm=();
 	my %nm_hash=();
 	
 	print "/*processing $fname.dat...*/\n\n";
@@ -638,7 +645,7 @@ sub process_ofile
 		{
 			$_ =~ s/REGISTER/IY/g;
 		}
-#print ">>> $_ <<<\n";		
+	
 		#my($opcode, $mnemonic, $tstates, $w) = $_ =~ /^(\w+)=\"(.*)\"/;
 		foreach $pair (split /\s\s+/)
 		{
@@ -672,11 +679,23 @@ sub process_ofile
 		
 		print "$c\n" if(!$nm_hash{$fnname} && $opc{"asm"});
 		
-		#add to table
+		#add to tables
 		if($opc{"asm"})
 		{
 			$tbl[hex($opc{"opcode"})]=$fnname;
 			$nm_hash{$fnname}=1;
+			
+			if($opc{"t"} =~ /\//)
+			{
+				my @tts = split /\//,$opc{"t"};
+				die "bad t format" if($#tts != 1);
+				$tts[1]=0 if($tts[1] == $tts[0]);
+				$tbl_dasm[hex($opc{"opcode"})]=[($opc{"asm"} =~ /^(ignore|reset)\s/)? '#': $opc{"asm"},$tts[0],$tts[1]];
+			}
+			else
+			{
+				$tbl_dasm[hex($opc{"opcode"})]=[($opc{"asm"} =~ /^(ignore|reset)\s/)? '#': $opc{"asm"},$opc{"t"},0];
+			}
 		}
 		else
 		{
@@ -691,17 +710,29 @@ sub process_ofile
 	#empty fields means NULL
 	for($ii=0;$ii < 256;$ii++)
 	{
-		$tbl[$ii]='NULL' if(!defined($tbl[$ii]));
+		if(!defined($tbl[$ii]))
+		{
+			$tbl[$ii]='NULL';
+			$tbl_dasm[$ii] = ['#',0,0];
+		}
 	}
 
 	# for cloned BIT ddcb/fdcb opcodes 
 	my $last;
 	for($ii=255;$ii >= 0;$ii--)
 	{
-		$tbl[$ii]=$last if($tbl[$ii] eq '#');
-		$last=$tbl[$ii];
+		if($tbl[$ii] eq '#')
+		{
+			$tbl[$ii]=$tbl[$last];
+			$tbl_dasm[$ii]=$tbl_dasm[$last];
+		}
+		
+		
+		$last=$ii;
 	}
 	
+	
+	$$disasmt="\n\n/**/\nstatic z80ex_opc_dasm dasm_".$def."[0x100] = {\n";
 	
 	my $footer="\n\n/**/\n";
 	$footer .= "static z80ex_opcode_fn opcodes_".$def."[0x100] = {\n";
@@ -710,12 +741,24 @@ sub process_ofile
 	{
 		$footer.= sprintf(' %-14s',$tbl[$ii]);
 		
-		$footer.=',' if($ii != 255);		
+		my $ddasm = ($tbl_dasm[$ii]->[0] eq '#')? 'NULL': '"'.$tbl_dasm[$ii]->[0].'"';
+		
+		$$disasmt.=sprintf('{ %-20s, %2d , %2d } /* %02X */',$ddasm,$tbl_dasm[$ii]->[1],$tbl_dasm[$ii]->[2],$ii);
+		
+		if($ii != 255)
+		{
+			$footer.=',';
+			$$disasmt.=',';
+		}
+		
+		$$disasmt.="\n";
+		
 		$footer.= "\n" if(($ii+1)/4 == int(($ii+1)/4));
 	}
 	
 	chop $footer;
 	$footer.="\n};\n";
+	$$disasmt.="\n};\n";
 	
 	print $footer;
 	
@@ -725,14 +768,25 @@ sub process_ofile
 }
 
 my $to_file = 1;
+my $disasmt;
 
-&process_ofile('./opcodes_base','base',$to_file);
-&process_ofile('./opcodes_cb','cb',$to_file);
-&process_ofile('./opcodes_ed','ed',$to_file);
-&process_ofile('./opcodes_ddfd','dd',$to_file);
-&process_ofile('./opcodes_ddfd','fd',$to_file);
-&process_ofile('./opcodes_ddfdcb','ddcb',$to_file);
-&process_ofile('./opcodes_ddfdcb','fdcb',$to_file);
+#open(DFILE,'>./opcodes_dasm.c') or die ("cannot open dasm.c for writing\n");
+#print DFILE "/* autogenerated, do not edit */";
 
+&process_ofile('./opcodes_base','base',\$disasmt,$to_file);
+#print DFILE $disasmt;
+&process_ofile('./opcodes_cb','cb',\$disasmt,$to_file);
+#print DFILE $disasmt;
+&process_ofile('./opcodes_ed','ed',\$disasmt,$to_file);
+#print DFILE $disasmt;
+&process_ofile('./opcodes_ddfd','dd',\$disasmt,$to_file);
+#print DFILE $disasmt;
+&process_ofile('./opcodes_ddfd','fd',\$disasmt,$to_file);
+#print DFILE $disasmt;
+&process_ofile('./opcodes_ddfdcb','ddcb',\$disasmt,$to_file);
+#print DFILE $disasmt;
+&process_ofile('./opcodes_ddfdcb','fdcb',\$disasmt,$to_file);
+#print DFILE $disasmt;
 
+#close(DFILE);
 

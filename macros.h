@@ -7,8 +7,6 @@
  *
  */
 
-/*most of the code in this file is based on z80 emulation core of FUSE project (http://fuse-emulator.sourceforge.net)*/
-
 #ifndef _Z80EX_MACROS_H_INCLUDED
 #define _Z80EX_MACROS_H_INCLUDED
 
@@ -190,6 +188,7 @@ for using outside of certain opcode execution)*/
 		sz53_table[A];\
 }
 
+/*FIXME: is ADD IX/IY also affects memptr?*/
 #define ADD16(value1,value2)\
 {\
 	Z80EX_DWORD add16temp = (value1) + (value2); \
@@ -277,11 +276,13 @@ for using outside of certain opcode execution)*/
 	dst=src; \
 }
 
+/*FIXME: is it really affects memptr?*/
 /*ld (nnnn|BC|DE), A*/
 #define LD_A_TO_ADDR_MPTR(dst, src, addr) \
 {\
 	dst=src; \
-	MEMPTR=A*0x100;\
+	MEMPTRh=A;\
+	MEMPTRl=0;\
 }
 
 /*ld a,(BC|DE|nnnn)*/
@@ -296,14 +297,14 @@ for using outside of certain opcode execution)*/
 	dst=src; \
 }
 
-/*ld (nnnn),BC|DE|HL|IX|IY*/
+/*ld (nnnn),BC|DE|SP|HL|IX|IY*/
 #define LD_RP_TO_ADDR_MPTR_16(dst, src, addr) \
 {\
 	dst=src; \
 	MEMPTR=addr+1;\
 }
 
-/*ld BC|DE|HL|IX|IY,(nnnn)*/
+/*ld BC|DE|SP|HL|IX|IY,(nnnn)*/
 #define LD_RP_FROM_ADDR_MPTR_16(dst, src, addr) \
 {\
 	dst=src; \
@@ -339,10 +340,24 @@ for using outside of certain opcode execution)*/
 	MEMPTR=port+1;\
 }
 
+/*OUT (nn),A*/
+#define OUT_A(port,reg, wr) \
+{\
+	WRITE_PORT(port,reg,wr); \
+	MEMPTR=port;\
+}
+
 #define IN(reg,port,rd) \
 {\
 	READ_PORT(reg,port,rd); \
 	F = ( F & FLAG_C) | sz53p_table[(reg)];\
+	MEMPTR=port+1;\
+}
+
+/*IN A,(nn)*/
+#define IN_A(reg,port,rd) \
+{\
+	READ_PORT(reg,port,rd); \
 	MEMPTR=port+1;\
 }
 
@@ -351,6 +366,7 @@ for using outside of certain opcode execution)*/
 	Z80EX_BYTE val; \
 	READ_PORT(val, port, rd); \
 	F = ( F & FLAG_C) | sz53p_table[(val)];\
+	MEMPTR=port+1;\
 }
 
 #define POP(rp, rd1, rd2) \
@@ -558,6 +574,7 @@ for using outside of certain opcode execution)*/
 	  ( bytetemp & FLAG_3 ) | ( (bytetemp & 0x02) ? FLAG_5 : 0 );\
 }
 
+/*TODO: MEMPTR emulation*/
 #define CPI(rd) \
 {\
 	Z80EX_BYTE value,bytetemp,lookup;\
@@ -595,13 +612,15 @@ for using outside of certain opcode execution)*/
 #define INI(rd, wr) \
 {\
 	Z80EX_BYTE initemp;\
+	MEMPTR=BC+1;\
 	READ_PORT(initemp, BC, rd);\
 	WRITE_MEM( HL, initemp, wr );\
 	B--; HL++;\
 	F = ( initemp & 0x80 ? FLAG_N : 0 ) | sz53_table[B];\
-	IN_BL(initemp,1)\
+	IN_BL(initemp,1);\
 }
 
+/*TODO: MEMPTR emulation*/
 #define OUTI(rd, wr) \
 {\
 	Z80EX_BYTE outitemp;\
@@ -625,6 +644,7 @@ for using outside of certain opcode execution)*/
 	  ( bytetemp & FLAG_3 ) | ( (bytetemp & 0x02) ? FLAG_5 : 0 );\
 }
 
+/*TODO: MEMPTR emulation*/
 #define CPD(rd) \
 {\
 	Z80EX_BYTE value,bytetemp,lookup;\
@@ -644,6 +664,7 @@ for using outside of certain opcode execution)*/
 #define IND(rd,wr) \
 {\
 	Z80EX_BYTE initemp;\
+	MEMPTR=BC;\
 	READ_PORT(initemp, BC, rd);\
 	WRITE_MEM( HL, initemp, wr );\
 	B--; HL--;\
@@ -651,6 +672,7 @@ for using outside of certain opcode execution)*/
 	IN_BL(initemp,-1)\
 }
 
+/*TODO: MEMPTR emulation*/
 #define OUTD(rd, wr) \
 {\
 	Z80EX_BYTE outitemp;\
@@ -674,6 +696,7 @@ for using outside of certain opcode execution)*/
 	if(BC) {\
 		PC-=2;\
 		T_WAIT_UNTIL(t2);\
+		MEMPTR=PC+1;\
 	}\
 	else\
 	{\
@@ -681,6 +704,7 @@ for using outside of certain opcode execution)*/
 	}\
 }
 
+/*TODO: MEMPTR emulation*/
 #define CPIR(t1, t2, rd) \
 {\
 	Z80EX_BYTE value,bytetemp,lookup;\
@@ -705,9 +729,11 @@ for using outside of certain opcode execution)*/
 	}\
 }
 
+/*FIXME: is MEMPTR really = 0?*/
 #define INIR(t1,t2,rd,wr) \
 {\
 	Z80EX_BYTE initemp;\
+	MEMPTR=0;\
 	READ_PORT(initemp, BC, rd);\
 	WRITE_MEM( HL, initemp, wr);\
 	B--; HL++;\
@@ -723,9 +749,11 @@ for using outside of certain opcode execution)*/
 	IN_BL(initemp,1)\
 }
 
+/*FIXME: is MEMPTR really = 0?*/
 #define OTIR(t1,t2,rd,wr) \
 {\
 	Z80EX_BYTE outitemp;\
+	MEMPTR=0;\
 	READ_MEM(outitemp, HL, rd);\
 	B--;\
 	WRITE_PORT(BC, outitemp, wr);\
@@ -754,6 +782,7 @@ for using outside of certain opcode execution)*/
 	if(BC) {\
 		PC-=2;\
 		T_WAIT_UNTIL(t2);\
+		MEMPTR=PC+1;\
 	}\
 	else\
 	{\
@@ -761,6 +790,7 @@ for using outside of certain opcode execution)*/
 	}\
 }
 
+/*TODO: MEMPTR emulation*/
 #define CPDR(t1,t2,rd) \
 {\
 	Z80EX_BYTE value,bytetemp,lookup;\
@@ -785,9 +815,11 @@ for using outside of certain opcode execution)*/
 	}\
 }
 
+/*FIXME: is MEMPTR really = 0?*/
 #define INDR(t1,t2,rd,wr) \
 {\
 	Z80EX_BYTE initemp;\
+	MEMPTR=0;\
 	READ_PORT(initemp, BC, rd);\
 	WRITE_MEM( HL, initemp, wr );\
 	B--; HL--;\
@@ -803,9 +835,11 @@ for using outside of certain opcode execution)*/
 	IN_BL(initemp,-1)\
 }
 
+/*FIXME: is MEMPTR really = 0?*/
 #define OTDR(t1,t2,rd,wr) \
 {\
 	Z80EX_BYTE outitemp;\
+	MEMPTR=0;\
 	READ_MEM(outitemp, HL, rd);\
 	B--;\
 	WRITE_PORT(BC,outitemp,wr);\
@@ -934,17 +968,15 @@ for using outside of certain opcode execution)*/
 	wordtemp = HL; HL = HL_; HL_ = wordtemp;\
 }
 
-/*???TODO??? -- я слыхал, сразу после DI может проскочить прерывание*/
 #define DI() \
 {\
 	IFF1=IFF2=0;\
 }
 
-/*cpu->ei_last == flag for not accepting interrupts until next instruction after EI is finished*/
 #define EI() \
 {\
 	IFF1 = IFF2 = 1;\
-	cpu->ei_last=1;\
+	cpu->noint_once=1;\
 }
 
 #define SET(bit, val) \

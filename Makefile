@@ -15,7 +15,7 @@ ENDIANNESS := WORDS_LITTLE_ENDIAN
 #################################################################
 
 PROJ := libz80ex
-VERSION := 0.12
+VERSION := 0.13
 API_V := 0
 
 c_files:= z80ex.c

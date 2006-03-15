@@ -24,7 +24,7 @@ static void op_ED_0x42(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD (nnnn),BC*/
+/*LD (@),BC*/
 static void op_ED_0x43(Z80EX_CONTEXT *cpu)
 {
 	temp_addr.b.l=READ_OP();
@@ -92,7 +92,7 @@ static void op_ED_0x4a(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD BC,(nnnn)*/
+/*LD BC,(@)*/
 static void op_ED_0x4b(Z80EX_CONTEXT *cpu)
 {
 	temp_addr.b.l=READ_OP();
@@ -160,7 +160,7 @@ static void op_ED_0x52(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD (nnnn),DE*/
+/*LD (@),DE*/
 static void op_ED_0x53(Z80EX_CONTEXT *cpu)
 {
 	temp_addr.b.l=READ_OP();
@@ -228,7 +228,7 @@ static void op_ED_0x5a(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD DE,(nnnn)*/
+/*LD DE,(@)*/
 static void op_ED_0x5b(Z80EX_CONTEXT *cpu)
 {
 	temp_addr.b.l=READ_OP();
@@ -296,7 +296,7 @@ static void op_ED_0x62(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD (nnnn),HL*/
+/*LD (@),HL*/
 static void op_ED_0x63(Z80EX_CONTEXT *cpu)
 {
 	temp_addr.b.l=READ_OP();
@@ -364,7 +364,7 @@ static void op_ED_0x6a(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD HL,(nnnn)*/
+/*LD HL,(@)*/
 static void op_ED_0x6b(Z80EX_CONTEXT *cpu)
 {
 	temp_addr.b.l=READ_OP();
@@ -432,12 +432,12 @@ static void op_ED_0x72(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD (nnnn),SP*/
+/*LD (@),SP*/
 static void op_ED_0x73(Z80EX_CONTEXT *cpu)
 {
 	temp_addr.b.l=READ_OP();
 	temp_addr.b.h=READ_OP();
-	LD16(temp_word.w,SP);
+	LD_RP_TO_ADDR_MPTR_16(temp_word.w,SP, temp_addr.w);
 	WRITE_MEM(temp_addr.w,temp_word.b.l,14);
 	WRITE_MEM(temp_addr.w+1,temp_word.b.h,17);
 	T_WAIT_UNTIL(20);
@@ -492,14 +492,14 @@ static void op_ED_0x7a(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD SP,(nnnn)*/
+/*LD SP,(@)*/
 static void op_ED_0x7b(Z80EX_CONTEXT *cpu)
 {
 	temp_addr.b.l=READ_OP();
 	temp_addr.b.h=READ_OP();
 	READ_MEM(temp_word.b.l,temp_addr.w,14);
 	READ_MEM(temp_word.b.h,temp_addr.w+1,17);
-	LD16(SP,temp_word.w);
+	LD_RP_FROM_ADDR_MPTR_16(SP,temp_word.w, temp_addr.w);
 	T_WAIT_UNTIL(20);
 	return;
 }

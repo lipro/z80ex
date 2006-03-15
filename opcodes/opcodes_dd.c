@@ -16,7 +16,7 @@ static void op_DD_0x19(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD IX,nnnn*/
+/*LD IX,@*/
 static void op_DD_0x21(Z80EX_CONTEXT *cpu)
 {
 	temp_word.b.l=READ_OP();
@@ -26,7 +26,7 @@ static void op_DD_0x21(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD (nnnn),IX*/
+/*LD (@),IX*/
 static void op_DD_0x22(Z80EX_CONTEXT *cpu)
 {
 	temp_addr.b.l=READ_OP();
@@ -62,7 +62,7 @@ static void op_DD_0x25(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD IXH,nn*/
+/*LD IXH,#*/
 static void op_DD_0x26(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -79,7 +79,7 @@ static void op_DD_0x29(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD IX,(nnnn)*/
+/*LD IX,(@)*/
 static void op_DD_0x2a(Z80EX_CONTEXT *cpu)
 {
 	temp_addr.b.l=READ_OP();
@@ -115,7 +115,7 @@ static void op_DD_0x2d(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD IXL,nn*/
+/*LD IXL,#*/
 static void op_DD_0x2e(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -124,7 +124,7 @@ static void op_DD_0x2e(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*INC (IX+dd)*/
+/*INC (IX+$)*/
 static void op_DD_0x34(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -137,7 +137,7 @@ static void op_DD_0x34(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*DEC (IX+dd)*/
+/*DEC (IX+$)*/
 static void op_DD_0x35(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -150,7 +150,7 @@ static void op_DD_0x35(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD (IX+dd),nn*/
+/*LD (IX+$),#*/
 static void op_DD_0x36(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -187,7 +187,7 @@ static void op_DD_0x45(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD B,(IX+dd)*/
+/*LD B,(IX+$)*/
 static void op_DD_0x46(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -215,7 +215,7 @@ static void op_DD_0x4d(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD C,(IX+dd)*/
+/*LD C,(IX+$)*/
 static void op_DD_0x4e(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -243,7 +243,7 @@ static void op_DD_0x55(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD D,(IX+dd)*/
+/*LD D,(IX+$)*/
 static void op_DD_0x56(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -271,7 +271,7 @@ static void op_DD_0x5d(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD E,(IX+dd)*/
+/*LD E,(IX+$)*/
 static void op_DD_0x5e(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -331,7 +331,7 @@ static void op_DD_0x65(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD H,(IX+dd)*/
+/*LD H,(IX+$)*/
 static void op_DD_0x66(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -399,7 +399,7 @@ static void op_DD_0x6d(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD L,(IX+dd)*/
+/*LD L,(IX+$)*/
 static void op_DD_0x6e(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -419,7 +419,7 @@ static void op_DD_0x6f(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD (IX+dd),B*/
+/*LD (IX+$),B*/
 static void op_DD_0x70(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -431,7 +431,7 @@ static void op_DD_0x70(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD (IX+dd),C*/
+/*LD (IX+$),C*/
 static void op_DD_0x71(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -443,7 +443,7 @@ static void op_DD_0x71(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD (IX+dd),D*/
+/*LD (IX+$),D*/
 static void op_DD_0x72(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -455,7 +455,7 @@ static void op_DD_0x72(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD (IX+dd),E*/
+/*LD (IX+$),E*/
 static void op_DD_0x73(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -467,7 +467,7 @@ static void op_DD_0x73(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD (IX+dd),H*/
+/*LD (IX+$),H*/
 static void op_DD_0x74(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -479,7 +479,7 @@ static void op_DD_0x74(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD (IX+dd),L*/
+/*LD (IX+$),L*/
 static void op_DD_0x75(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -491,7 +491,7 @@ static void op_DD_0x75(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD (IX+dd),A*/
+/*LD (IX+$),A*/
 static void op_DD_0x77(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -519,7 +519,7 @@ static void op_DD_0x7d(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*LD A,(IX+dd)*/
+/*LD A,(IX+$)*/
 static void op_DD_0x7e(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -547,7 +547,7 @@ static void op_DD_0x85(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*ADD A,(IX+dd)*/
+/*ADD A,(IX+$)*/
 static void op_DD_0x86(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -575,7 +575,7 @@ static void op_DD_0x8d(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*ADC A,(IX+dd)*/
+/*ADC A,(IX+$)*/
 static void op_DD_0x8e(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -603,7 +603,7 @@ static void op_DD_0x95(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*SUB (IX+dd)*/
+/*SUB (IX+$)*/
 static void op_DD_0x96(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -631,7 +631,7 @@ static void op_DD_0x9d(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*SBC A,(IX+dd)*/
+/*SBC A,(IX+$)*/
 static void op_DD_0x9e(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -659,7 +659,7 @@ static void op_DD_0xa5(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*AND (IX+dd)*/
+/*AND (IX+$)*/
 static void op_DD_0xa6(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -687,7 +687,7 @@ static void op_DD_0xad(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*XOR (IX+dd)*/
+/*XOR (IX+$)*/
 static void op_DD_0xae(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -715,7 +715,7 @@ static void op_DD_0xb5(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*OR (IX+dd)*/
+/*OR (IX+$)*/
 static void op_DD_0xb6(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -743,7 +743,7 @@ static void op_DD_0xbd(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*CP (IX+dd)*/
+/*CP (IX+$)*/
 static void op_DD_0xbe(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();

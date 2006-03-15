@@ -1,2 +1,2 @@
-- check whether block I/O and block transfer operations, OUTs and 
-accepting interrupts affects MEMPTR register. real hardware tests needed :(
+- figure out how OUTI/OUTD and CP* commands affects MEMPTR register...
+	hardware tests needed.

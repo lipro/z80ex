@@ -1,3 +1,10 @@
+15.03.2006 - release 0.13
+- more MEMPTR emulation
+- fixed nasty bug in DD/FD prefixes behavior
+
+02.03.2006
+- fixed IN A,(nn) (flags)
+
 23.02.2006 - release 0.12
 - fixed timings for LD IIh/IIl,nn (thanks to Restorer)
 

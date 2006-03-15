@@ -45,9 +45,11 @@ struct _z80_cpu_context {
 	unsigned long tstate; /*t-state clock of current/last step*/
 	unsigned char op_tstate; /*clean (without WAITs and such) t-state of currently executing instruction*/
 	
-	int ei_last; /*this flag will be set after ei, and reset on any next opcode*/
+	int noint_once; /*disable int before next opcode -- for EI*/
 	int doing_opcode; /*flag that indicates that there's an opcode currently executed*/
 	char int_vector_req; /*flag indicates that opcode must be fetched from IO device (int vector read)*/
+	char is_op_buffered;
+	Z80EX_BYTE buffered_op; /*opcode, fetched in previous z80ex_step() call (for repetitive dd/fd and dd/fd,ed)*/
 	
 	/*callbacks*/
 	z80ex_tstate_cb tstate_cb;

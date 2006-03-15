@@ -72,29 +72,20 @@ static void opc_DD_or_FD(Z80EX_CONTEXT *cpu, Z80EX_BYTE pf/*0xdd or 0xfd*/)
 	z80ex_opcode_fn ofn;
 	Z80EX_BYTE opcode;
 	
-	do
-	{
-		opcode=READ_OP_M1();
-		R++;
-	}
-	while((opcode | 0x20) == 0xFD); /*ignore repetitive DD/FD*/
-		
-	if(opcode == 0xed) /*discard dd/fd, do ed-prefixed op*/
-	{
-		TSTATES(4);
-		opc_ED(cpu);
-		return;
-	}
-				
-	ofn = (pf == 0xdd)? opcodes_dd[opcode]: opcodes_fd[opcode];
-	if(ofn == NULL) /*these are mirrored from unprefixed opcodes*/
-	{
-		TSTATES(4);
-		opcodes_base[opcode](cpu);
-		return;
-	}
+	T_WAIT_UNTIL(4);
 	
-	ofn(cpu);
+	opcode=READ_OP_M1();
+	R++;
+	
+	ofn = (pf == 0xdd)? opcodes_dd[opcode]: opcodes_fd[opcode];
+	
+	if((opcode | 0x20) == 0xFD || opcode == 0xed || ofn == NULL) /*next byte is DD/FD/ED or mirrored opcode? ignore DD/FD prefix then*/
+	{
+		if(!cpu->int_vector_req) PC--;
+		cpu->is_op_buffered = 1;
+		cpu->buffered_op = opcode; /*keep this byte for next z80ex_step()*/
+	} 
+	else ofn(cpu);
 }
 
 static void opc_DD(Z80EX_CONTEXT *cpu)
@@ -118,10 +109,8 @@ static void opc_ED(Z80EX_CONTEXT *cpu)
 	if(ofn == NULL) /*these are 8-tstates NOP*/
 	{
 		TSTATES(8);
-		return;
 	}
-	
-	ofn(cpu);
+	else ofn(cpu);
 }
 
 static void opc_CB(Z80EX_CONTEXT *cpu)
@@ -177,12 +166,22 @@ LIB_EXPORT int z80ex_step(Z80EX_CONTEXT *cpu)
 	Z80EX_BYTE opcode;
 	
 	cpu->doing_opcode=1; /*dont bother us with your interrupts now!*/
-	cpu->ei_last=0; /*for one uninterruptable step after EI*/
+	cpu->noint_once=0;
 	cpu->tstate=0;
 	cpu->op_tstate=0;
 	
-	opcode=READ_OP_M1(); /*fetch opcode*/
-	R++; /*R increased by one on every first M1 cycle*/
+	if(cpu->is_op_buffered) /*opcode was fetched in previous call to z80ex_step*/
+	{
+		opcode=cpu->buffered_op;
+		cpu->is_op_buffered=0;
+		if(!cpu->int_vector_req) PC++;
+	}
+	else
+	{
+		opcode=READ_OP_M1(); /*fetch opcode*/
+		R++; /*R increased by one on every first M1 cycle*/
+	}
+	
 	opcodes_base[opcode](cpu);
 
 	cpu->doing_opcode=0;
@@ -193,10 +192,11 @@ LIB_EXPORT void z80ex_reset(Z80EX_CONTEXT *cpu)
 {
 	PC=0x0000; IFF1=IFF2=0; IM=IM0;
 	AF=SP=BC=DE=HL=IX=IY=AF_=BC_=DE_=HL_=0xffff;
-	cpu->ei_last=0; cpu->halted=0;
+	cpu->noint_once=0; cpu->halted=0;
 	cpu->int_vector_req=0;
 	cpu->doing_opcode=0;
 	cpu->tstate=cpu->op_tstate=0;
+	cpu->is_op_buffered=0;
 }
 
 /**/
@@ -249,7 +249,7 @@ LIB_EXPORT void z80ex_set_tstate_callback(Z80EX_CONTEXT *cpu, z80ex_tstate_cb cb
 /*non-maskable interrupt*/
 LIB_EXPORT int z80ex_nmi(Z80EX_CONTEXT *cpu)
 {
-	if(cpu->doing_opcode) return(0);
+	if(cpu->doing_opcode || cpu->is_op_buffered) return(0);
 	R++; /*accepting interrupt increases R by one*/
 	IFF1=0;
 
@@ -264,7 +264,8 @@ LIB_EXPORT int z80ex_nmi(Z80EX_CONTEXT *cpu)
 	TSTATES(2);
 	
 	PC=0x0066;
-	
+	MEMPTR=PC; /*FIXME: is it really so?*/
+		
 	return(11); /*NMI always takes 11 t-states*/
 }
 
@@ -273,10 +274,11 @@ LIB_EXPORT int z80ex_int(Z80EX_CONTEXT *cpu)
 {
 	Z80EX_WORD inttemp;
 	Z80EX_BYTE iv;
+	unsigned long tt;
 	/*If the INT line is low and IFF1 is set, and there's no opcode executing just now,
 	a maskable interrupt is accepted, whether or not the
 	last INT routine has finished*/
-	if(!IFF1 || cpu->ei_last || cpu->doing_opcode) return(0);
+	if(!IFF1 || cpu->noint_once || cpu->doing_opcode || cpu->is_op_buffered) return(0);
 
 	cpu->tstate=0;
 	cpu->op_tstate=0;
@@ -290,13 +292,24 @@ LIB_EXPORT int z80ex_int(Z80EX_CONTEXT *cpu)
 	R++; /*accepting interrupt increases R by one*/
 	
 	cpu->int_vector_req=1;
+	cpu->doing_opcode=1;
 	
 	switch(IM)
 	{
 		case IM0:
 			TSTATES(2); /*two extra wait-states*/
+
 			iv=READ_OP_M1();
 			opcodes_base[iv](cpu);
+
+			tt=cpu->tstate;
+		
+			while(cpu->is_op_buffered) /*this is not the end?*/
+			{
+				tt+=z80ex_step(cpu);
+			}
+			
+			cpu->tstate=tt;
 			break;
 		
 		case IM1:
@@ -312,16 +325,18 @@ LIB_EXPORT int z80ex_int(Z80EX_CONTEXT *cpu)
 			counter, and six to obtain the jump address)*/
 			T_WAIT_UNTIL(7);
 			iv=READ_OP();
-			inttemp=(0x100*I)+iv; /*iv will be 0xff for healthy zx-spectrum*/
+			inttemp=(0x100*I)+iv;
 		
 			PUSH(PC,7,10);
 				
 			READ_MEM(PCL,inttemp++,13); READ_MEM(PCH,inttemp,16);
+			MEMPTR=PC;
 			T_WAIT_UNTIL(19);
 			
 			break;
 	}
 	
+	cpu->doing_opcode=0;
 	cpu->int_vector_req=0;
 	
 	return(cpu->tstate);
