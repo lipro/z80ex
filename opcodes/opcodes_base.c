@@ -133,7 +133,7 @@ static void op_0x0f(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*DJNZ offset*/
+/*DJNZ %*/
 static void op_0x10(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -202,7 +202,7 @@ static void op_0x17(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*JR offset*/
+/*JR %*/
 static void op_0x18(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -270,7 +270,7 @@ static void op_0x1f(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*JR NZ,offset*/
+/*JR NZ,%*/
 static void op_0x20(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -346,7 +346,7 @@ static void op_0x27(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*JR Z,offset*/
+/*JR Z,%*/
 static void op_0x28(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -420,7 +420,7 @@ static void op_0x2f(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*JR NC,offset*/
+/*JR NC,%*/
 static void op_0x30(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -500,7 +500,7 @@ static void op_0x37(Z80EX_CONTEXT *cpu)
 	return;
 }
 
-/*JR C,offset*/
+/*JR C,%*/
 static void op_0x38(Z80EX_CONTEXT *cpu)
 {
 	temp_byte=READ_OP();
@@ -1731,6 +1731,11 @@ static void op_0xca(Z80EX_CONTEXT *cpu)
 	return;
 }
 
+static void op_p_CB(Z80EX_CONTEXT *cpu)
+{
+	cpu->prefix=0xCB;
+	cpu->noint_once=1;
+}
 
 /*CALL Z,@*/
 static void op_0xcc(Z80EX_CONTEXT *cpu)
@@ -1905,6 +1910,11 @@ static void op_0xdc(Z80EX_CONTEXT *cpu)
 	return;
 }
 
+static void op_p_DD(Z80EX_CONTEXT *cpu)
+{
+	cpu->prefix=0xDD;
+	cpu->noint_once=1;
+}
 
 /*SBC A,#*/
 static void op_0xde(Z80EX_CONTEXT *cpu)
@@ -2058,6 +2068,11 @@ static void op_0xec(Z80EX_CONTEXT *cpu)
 	return;
 }
 
+static void op_p_ED(Z80EX_CONTEXT *cpu)
+{
+	cpu->prefix=0xED;
+	cpu->noint_once=1;
+}
 
 /*XOR #*/
 static void op_0xee(Z80EX_CONTEXT *cpu)
@@ -2207,6 +2222,11 @@ static void op_0xfc(Z80EX_CONTEXT *cpu)
 	return;
 }
 
+static void op_p_FD(Z80EX_CONTEXT *cpu)
+{
+	cpu->prefix=0xFD;
+	cpu->noint_once=1;
+}
 
 /*CP #*/
 static void op_0xfe(Z80EX_CONTEXT *cpu)
@@ -2279,18 +2299,18 @@ static z80ex_opcode_fn opcodes_base[0x100] = {
  op_0xbc       , op_0xbd       , op_0xbe       , op_0xbf       ,
  op_0xc0       , op_0xc1       , op_0xc2       , op_0xc3       ,
  op_0xc4       , op_0xc5       , op_0xc6       , op_0xc7       ,
- op_0xc8       , op_0xc9       , op_0xca       , opc_CB        ,
+ op_0xc8       , op_0xc9       , op_0xca       , op_p_CB       ,
  op_0xcc       , op_0xcd       , op_0xce       , op_0xcf       ,
  op_0xd0       , op_0xd1       , op_0xd2       , op_0xd3       ,
  op_0xd4       , op_0xd5       , op_0xd6       , op_0xd7       ,
  op_0xd8       , op_0xd9       , op_0xda       , op_0xdb       ,
- op_0xdc       , opc_DD        , op_0xde       , op_0xdf       ,
+ op_0xdc       , op_p_DD       , op_0xde       , op_0xdf       ,
  op_0xe0       , op_0xe1       , op_0xe2       , op_0xe3       ,
  op_0xe4       , op_0xe5       , op_0xe6       , op_0xe7       ,
  op_0xe8       , op_0xe9       , op_0xea       , op_0xeb       ,
- op_0xec       , opc_ED        , op_0xee       , op_0xef       ,
+ op_0xec       , op_p_ED       , op_0xee       , op_0xef       ,
  op_0xf0       , op_0xf1       , op_0xf2       , op_0xf3       ,
  op_0xf4       , op_0xf5       , op_0xf6       , op_0xf7       ,
  op_0xf8       , op_0xf9       , op_0xfa       , op_0xfb       ,
- op_0xfc       , opc_FD        , op_0xfe       , op_0xff       
+ op_0xfc       , op_p_FD       , op_0xfe       , op_0xff       
 };

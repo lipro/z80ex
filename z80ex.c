@@ -10,12 +10,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef _MSC_VER
-#define LIB_EXPORT __declspec(dllexport)
-#else
-#define LIB_EXPORT
-#endif
-
 #define __Z80EX_SELF_INCLUDE
 
 #include "typedefs.h"
@@ -50,14 +44,6 @@ static Z80EX_BYTE sz53_table[0x100]; /* The S, Z, 5 and 3 bits of the index */
 static Z80EX_BYTE parity_table[0x100]; /* The parity of the lookup value */
 static Z80EX_BYTE sz53p_table[0x100]; /* OR the above two tables together */
 
-static void opc_DD_or_FD(Z80EX_CONTEXT *cpu, Z80EX_BYTE pf/*0xdd or 0xfd*/);
-static void opc_DD(Z80EX_CONTEXT *cpu);
-static void opc_FD(Z80EX_CONTEXT *cpu);
-static void opc_ED(Z80EX_CONTEXT *cpu);
-static void opc_CB(Z80EX_CONTEXT *cpu);
-static void opc_DDCB(Z80EX_CONTEXT *cpu);
-static void opc_FDCB(Z80EX_CONTEXT *cpu);
-
 #include "daa_table.c"
 #include "opcodes/opcodes_base.c"
 #include "opcodes/opcodes_dd.c"
@@ -66,80 +52,6 @@ static void opc_FDCB(Z80EX_CONTEXT *cpu);
 #include "opcodes/opcodes_ed.c"
 #include "opcodes/opcodes_ddcb.c"
 #include "opcodes/opcodes_fdcb.c"
-
-static void opc_DD_or_FD(Z80EX_CONTEXT *cpu, Z80EX_BYTE pf/*0xdd or 0xfd*/)
-{
-	z80ex_opcode_fn ofn;
-	Z80EX_BYTE opcode;
-	
-	T_WAIT_UNTIL(4);
-	
-	opcode=READ_OP_M1();
-	R++;
-	
-	ofn = (pf == 0xdd)? opcodes_dd[opcode]: opcodes_fd[opcode];
-	
-	if((opcode | 0x20) == 0xFD || opcode == 0xed || ofn == NULL) /*next byte is DD/FD/ED or mirrored opcode? ignore DD/FD prefix then*/
-	{
-		if(!cpu->int_vector_req) PC--;
-		cpu->is_op_buffered = 1;
-		cpu->buffered_op = opcode; /*keep this byte for next z80ex_step()*/
-	} 
-	else ofn(cpu);
-}
-
-static void opc_DD(Z80EX_CONTEXT *cpu)
-{
-	opc_DD_or_FD(cpu,0xdd);
-}
-
-static void opc_FD(Z80EX_CONTEXT *cpu)
-{
-	opc_DD_or_FD(cpu,0xfd);
-}
-
-static void opc_ED(Z80EX_CONTEXT *cpu)
-{
-	z80ex_opcode_fn ofn;
-	Z80EX_BYTE opcode;
-	
-	opcode=READ_OP_M1();
-	R++;
-	ofn = opcodes_ed[opcode];
-	if(ofn == NULL) /*these are 8-tstates NOP*/
-	{
-		TSTATES(8);
-	}
-	else ofn(cpu);
-}
-
-static void opc_CB(Z80EX_CONTEXT *cpu)
-{
-	Z80EX_BYTE opcode;
-	opcode=READ_OP_M1();
-	R++;
-	opcodes_cb[opcode](cpu);
-}
-
-static void opc_DDCB(Z80EX_CONTEXT *cpu)
-{
-	Z80EX_BYTE d;
-	Z80EX_BYTE opcode;
-	d=READ_OP();
-	temp_byte_s=(d & 0x80)? -(((~d) & 0x7f)+1): d;
-	opcode=READ_OP_M1(); /*R not increased on that M1*/
-	opcodes_ddcb[opcode](cpu);	
-}
-
-static void opc_FDCB(Z80EX_CONTEXT *cpu)
-{
-	Z80EX_BYTE d;	
-	Z80EX_BYTE opcode;
-	d=READ_OP();
-	temp_byte_s=(d & 0x80)? -(((~d) & 0x7f)+1): d;
-	opcode=READ_OP_M1(); /*R not increased on that M1*/
-	opcodes_fdcb[opcode](cpu);	
-}
 
 /* Initalise the tables used to set flags */
 static void init_tables(void)
@@ -160,43 +72,89 @@ static void init_tables(void)
 	sz53p_table[0] |= FLAG_Z;
 }
 
-/* do one opcode */
+/* do one opcode (instruction or prefix) */
 LIB_EXPORT int z80ex_step(Z80EX_CONTEXT *cpu)
 {
-	Z80EX_BYTE opcode;
+	Z80EX_BYTE opcode, d;
+	z80ex_opcode_fn ofn=NULL;
 	
-	cpu->doing_opcode=1; /*dont bother us with your interrupts now!*/
+	cpu->doing_opcode=1;
 	cpu->noint_once=0;
 	cpu->tstate=0;
 	cpu->op_tstate=0;
 	
-	if(cpu->is_op_buffered) /*opcode was fetched in previous call to z80ex_step*/
-	{
-		opcode=cpu->buffered_op;
-		cpu->is_op_buffered=0;
-		if(!cpu->int_vector_req) PC++;
-	}
+	opcode=READ_OP_M1(); /*fetch opcode*/
+	R++; /*R increased by one on every first M1 cycle*/
+
+	T_WAIT_UNTIL(4); /*M1 cycle eats min 4 t-states*/
+
+	if(!cpu->prefix) opcodes_base[opcode](cpu);
 	else
 	{
-		opcode=READ_OP_M1(); /*fetch opcode*/
-		R++; /*R increased by one on every first M1 cycle*/
+		if((cpu->prefix | 0x20) == 0xFD && ((opcode | 0x20) == 0xFD || opcode == 0xED))
+		{
+			cpu->prefix=opcode;
+			cpu->noint_once=1; /*interrupts are not accepted immediately after prefix*/
+		}
+		else
+		{
+			switch(cpu->prefix)
+			{
+				case 0xDD:
+				case 0xFD:
+					if(opcode == 0xCB)
+					{
+						d=READ_OP(); /*displacement*/
+						temp_byte_s=(d & 0x80)? -(((~d) & 0x7f)+1): d;
+						opcode=READ_OP();
+						ofn = (cpu->prefix == 0xDD)? opcodes_ddcb[opcode]: opcodes_fdcb[opcode];						
+					}
+					else
+					{
+						ofn = (cpu->prefix == 0xDD)? opcodes_dd[opcode]: opcodes_fd[opcode];
+						if(ofn == NULL) ofn=opcodes_base[opcode]; /*'mirrored' instructions*/
+					}
+					break;
+								
+				case 0xED:
+					ofn = opcodes_ed[opcode];
+					if(ofn == NULL) ofn=opcodes_base[0x00];
+					break;
+				
+				case 0xCB:
+					ofn = opcodes_cb[opcode];
+					break;
+					
+				default:
+					/*this must'nt happen!*/
+					break;
+			}
+		
+			ofn(cpu);
+		
+			cpu->prefix=0;
+		}
 	}
-	
-	opcodes_base[opcode](cpu);
-
+		
 	cpu->doing_opcode=0;
 	return(cpu->tstate);
 }
 
+LIB_EXPORT Z80EX_BYTE z80ex_last_op_type(Z80EX_CONTEXT *cpu)
+{
+	return(cpu->prefix);
+}
+	
 LIB_EXPORT void z80ex_reset(Z80EX_CONTEXT *cpu)
 {
 	PC=0x0000; IFF1=IFF2=0; IM=IM0;
 	AF=SP=BC=DE=HL=IX=IY=AF_=BC_=DE_=HL_=0xffff;
+	I=R=R7=0;
 	cpu->noint_once=0; cpu->halted=0;
 	cpu->int_vector_req=0;
 	cpu->doing_opcode=0;
 	cpu->tstate=cpu->op_tstate=0;
-	cpu->is_op_buffered=0;
+	cpu->prefix=0;
 }
 
 /**/
@@ -249,7 +207,10 @@ LIB_EXPORT void z80ex_set_tstate_callback(Z80EX_CONTEXT *cpu, z80ex_tstate_cb cb
 /*non-maskable interrupt*/
 LIB_EXPORT int z80ex_nmi(Z80EX_CONTEXT *cpu)
 {
-	if(cpu->doing_opcode || cpu->is_op_buffered) return(0);
+	if(cpu->doing_opcode || cpu->noint_once) return(0);
+	
+	cpu->doing_opcode=1;
+	
 	R++; /*accepting interrupt increases R by one*/
 	IFF1=0;
 
@@ -266,6 +227,8 @@ LIB_EXPORT int z80ex_nmi(Z80EX_CONTEXT *cpu)
 	PC=0x0066;
 	MEMPTR=PC; /*FIXME: is it really so?*/
 		
+	cpu->doing_opcode=0;
+	
 	return(11); /*NMI always takes 11 t-states*/
 }
 
@@ -275,10 +238,11 @@ LIB_EXPORT int z80ex_int(Z80EX_CONTEXT *cpu)
 	Z80EX_WORD inttemp;
 	Z80EX_BYTE iv;
 	unsigned long tt;
+	
 	/*If the INT line is low and IFF1 is set, and there's no opcode executing just now,
 	a maskable interrupt is accepted, whether or not the
 	last INT routine has finished*/
-	if(!IFF1 || cpu->noint_once || cpu->doing_opcode || cpu->is_op_buffered) return(0);
+	if(!IFF1 || cpu->noint_once || cpu->doing_opcode) return(0);
 
 	cpu->tstate=0;
 	cpu->op_tstate=0;
@@ -304,7 +268,7 @@ LIB_EXPORT int z80ex_int(Z80EX_CONTEXT *cpu)
 
 			tt=cpu->tstate;
 		
-			while(cpu->is_op_buffered) /*this is not the end?*/
+			while(!z80ex_last_op_type(cpu)) /*this is not the end?*/
 			{
 				tt+=z80ex_step(cpu);
 			}

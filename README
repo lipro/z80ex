@@ -12,6 +12,7 @@ Features:
 - ability to create several virtual CPUs
 - written in pure ANSI C
 - compiles as a library, which may be used via simple callback-based API
+- disassembler included
 
 
 Building and installation (*):
@@ -37,10 +38,20 @@ shared libraries
 Usage:
 ------
 
-include <z80ex.h> in your sources,
+emulator:
+
+include <z80ex/z80ex.h> in your sources,
 link with "libz80ex" (-lz80ex).
 
 for API documentation see "z80ex.h".
+
+disassembler:
+
+include <z80ex/z80ex_dasm.h> in your sources,
+link with "libz80ex_dasm" (-lz80ex_dasm).
+
+for API documentation see "z80ex_dasm.h".
+also look at the dasm.c at the "examples" directory
 
 
 _____________________

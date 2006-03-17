@@ -4,11 +4,11 @@
 static void op_FDCB_0x00(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RLC(temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -16,11 +16,11 @@ static void op_FDCB_0x00(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x01(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RLC(temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -28,11 +28,11 @@ static void op_FDCB_0x01(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x02(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RLC(temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -40,11 +40,11 @@ static void op_FDCB_0x02(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x03(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RLC(temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -52,11 +52,11 @@ static void op_FDCB_0x03(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x04(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RLC(temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -64,11 +64,11 @@ static void op_FDCB_0x04(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x05(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RLC(temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -76,10 +76,10 @@ static void op_FDCB_0x05(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x06(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RLC(temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -87,11 +87,11 @@ static void op_FDCB_0x06(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x07(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RLC(temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -99,11 +99,11 @@ static void op_FDCB_0x07(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x08(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RRC(temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -111,11 +111,11 @@ static void op_FDCB_0x08(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x09(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RRC(temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -123,11 +123,11 @@ static void op_FDCB_0x09(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x0a(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RRC(temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -135,11 +135,11 @@ static void op_FDCB_0x0a(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x0b(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RRC(temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -147,11 +147,11 @@ static void op_FDCB_0x0b(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x0c(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RRC(temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -159,11 +159,11 @@ static void op_FDCB_0x0c(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x0d(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RRC(temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -171,10 +171,10 @@ static void op_FDCB_0x0d(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x0e(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RRC(temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -182,11 +182,11 @@ static void op_FDCB_0x0e(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x0f(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RRC(temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -194,11 +194,11 @@ static void op_FDCB_0x0f(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x10(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RL(temp_byte);
 	LD16(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -206,11 +206,11 @@ static void op_FDCB_0x10(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x11(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RL(temp_byte);
 	LD16(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -218,11 +218,11 @@ static void op_FDCB_0x11(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x12(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RL(temp_byte);
 	LD16(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -230,11 +230,11 @@ static void op_FDCB_0x12(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x13(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RL(temp_byte);
 	LD16(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -242,11 +242,11 @@ static void op_FDCB_0x13(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x14(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RL(temp_byte);
 	LD16(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -254,11 +254,11 @@ static void op_FDCB_0x14(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x15(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RL(temp_byte);
 	LD16(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -266,10 +266,10 @@ static void op_FDCB_0x15(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x16(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RL(temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -277,11 +277,11 @@ static void op_FDCB_0x16(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x17(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RL(temp_byte);
 	LD16(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -289,11 +289,11 @@ static void op_FDCB_0x17(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x18(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RR(temp_byte);
 	LD16(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -301,11 +301,11 @@ static void op_FDCB_0x18(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x19(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RR(temp_byte);
 	LD16(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -313,11 +313,11 @@ static void op_FDCB_0x19(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x1a(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RR(temp_byte);
 	LD16(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -325,11 +325,11 @@ static void op_FDCB_0x1a(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x1b(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RR(temp_byte);
 	LD16(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -337,11 +337,11 @@ static void op_FDCB_0x1b(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x1c(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RR(temp_byte);
 	LD16(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -349,11 +349,11 @@ static void op_FDCB_0x1c(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x1d(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RR(temp_byte);
 	LD16(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -361,10 +361,10 @@ static void op_FDCB_0x1d(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x1e(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RR(temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -372,11 +372,11 @@ static void op_FDCB_0x1e(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x1f(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RR(temp_byte);
 	LD16(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -384,11 +384,11 @@ static void op_FDCB_0x1f(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x20(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SLA(temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -396,11 +396,11 @@ static void op_FDCB_0x20(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x21(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SLA(temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -408,11 +408,11 @@ static void op_FDCB_0x21(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x22(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SLA(temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -420,11 +420,11 @@ static void op_FDCB_0x22(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x23(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SLA(temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -432,11 +432,11 @@ static void op_FDCB_0x23(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x24(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SLA(temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -444,11 +444,11 @@ static void op_FDCB_0x24(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x25(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SLA(temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -456,10 +456,10 @@ static void op_FDCB_0x25(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x26(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SLA(temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -467,11 +467,11 @@ static void op_FDCB_0x26(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x27(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SLA(temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -479,11 +479,11 @@ static void op_FDCB_0x27(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x28(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SRA(temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -491,11 +491,11 @@ static void op_FDCB_0x28(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x29(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SRA(temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -503,11 +503,11 @@ static void op_FDCB_0x29(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x2a(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SRA(temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -515,11 +515,11 @@ static void op_FDCB_0x2a(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x2b(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SRA(temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -527,11 +527,11 @@ static void op_FDCB_0x2b(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x2c(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SRA(temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -539,11 +539,11 @@ static void op_FDCB_0x2c(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x2d(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SRA(temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -551,10 +551,10 @@ static void op_FDCB_0x2d(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x2e(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SRA(temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -562,11 +562,11 @@ static void op_FDCB_0x2e(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x2f(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SRA(temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -574,11 +574,11 @@ static void op_FDCB_0x2f(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x30(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SLL(temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -586,11 +586,11 @@ static void op_FDCB_0x30(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x31(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SLL(temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -598,11 +598,11 @@ static void op_FDCB_0x31(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x32(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SLL(temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -610,11 +610,11 @@ static void op_FDCB_0x32(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x33(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SLL(temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -622,11 +622,11 @@ static void op_FDCB_0x33(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x34(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SLL(temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -634,11 +634,11 @@ static void op_FDCB_0x34(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x35(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SLL(temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -646,10 +646,10 @@ static void op_FDCB_0x35(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x36(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SLL(temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -657,11 +657,11 @@ static void op_FDCB_0x36(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x37(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SLL(temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -669,11 +669,11 @@ static void op_FDCB_0x37(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x38(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SRL(temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -681,11 +681,11 @@ static void op_FDCB_0x38(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x39(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SRL(temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -693,11 +693,11 @@ static void op_FDCB_0x39(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x3a(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SRL(temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -705,11 +705,11 @@ static void op_FDCB_0x3a(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x3b(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SRL(temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -717,11 +717,11 @@ static void op_FDCB_0x3b(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x3c(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SRL(temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -729,11 +729,11 @@ static void op_FDCB_0x3c(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x3d(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SRL(temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -741,10 +741,10 @@ static void op_FDCB_0x3d(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x3e(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SRL(temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -752,11 +752,11 @@ static void op_FDCB_0x3e(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x3f(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SRL(temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -764,9 +764,9 @@ static void op_FDCB_0x3f(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x47(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	BIT_MPTR(0,temp_byte);
-	T_WAIT_UNTIL(20);
+	T_WAIT_UNTIL(16);
 	return;
 }
 
@@ -774,9 +774,9 @@ static void op_FDCB_0x47(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x4f(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	BIT_MPTR(1,temp_byte);
-	T_WAIT_UNTIL(20);
+	T_WAIT_UNTIL(16);
 	return;
 }
 
@@ -784,9 +784,9 @@ static void op_FDCB_0x4f(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x57(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	BIT_MPTR(2,temp_byte);
-	T_WAIT_UNTIL(20);
+	T_WAIT_UNTIL(16);
 	return;
 }
 
@@ -794,9 +794,9 @@ static void op_FDCB_0x57(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x5f(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	BIT_MPTR(3,temp_byte);
-	T_WAIT_UNTIL(20);
+	T_WAIT_UNTIL(16);
 	return;
 }
 
@@ -804,9 +804,9 @@ static void op_FDCB_0x5f(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x67(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	BIT_MPTR(4,temp_byte);
-	T_WAIT_UNTIL(20);
+	T_WAIT_UNTIL(16);
 	return;
 }
 
@@ -814,9 +814,9 @@ static void op_FDCB_0x67(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x6f(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	BIT_MPTR(5,temp_byte);
-	T_WAIT_UNTIL(20);
+	T_WAIT_UNTIL(16);
 	return;
 }
 
@@ -824,9 +824,9 @@ static void op_FDCB_0x6f(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x77(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	BIT_MPTR(6,temp_byte);
-	T_WAIT_UNTIL(20);
+	T_WAIT_UNTIL(16);
 	return;
 }
 
@@ -834,9 +834,9 @@ static void op_FDCB_0x77(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x7f(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	BIT_MPTR(7,temp_byte);
-	T_WAIT_UNTIL(20);
+	T_WAIT_UNTIL(16);
 	return;
 }
 
@@ -844,11 +844,11 @@ static void op_FDCB_0x7f(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x80(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(0,temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -856,11 +856,11 @@ static void op_FDCB_0x80(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x81(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(0,temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -868,11 +868,11 @@ static void op_FDCB_0x81(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x82(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(0,temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -880,11 +880,11 @@ static void op_FDCB_0x82(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x83(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(0,temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -892,11 +892,11 @@ static void op_FDCB_0x83(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x84(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(0,temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -904,11 +904,11 @@ static void op_FDCB_0x84(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x85(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(0,temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -916,10 +916,10 @@ static void op_FDCB_0x85(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x86(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(0,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -927,11 +927,11 @@ static void op_FDCB_0x86(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x87(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(0,temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -939,11 +939,11 @@ static void op_FDCB_0x87(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x88(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(1,temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -951,11 +951,11 @@ static void op_FDCB_0x88(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x89(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(1,temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -963,11 +963,11 @@ static void op_FDCB_0x89(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x8a(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(1,temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -975,11 +975,11 @@ static void op_FDCB_0x8a(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x8b(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(1,temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -987,11 +987,11 @@ static void op_FDCB_0x8b(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x8c(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(1,temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -999,11 +999,11 @@ static void op_FDCB_0x8c(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x8d(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(1,temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1011,10 +1011,10 @@ static void op_FDCB_0x8d(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x8e(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(1,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1022,11 +1022,11 @@ static void op_FDCB_0x8e(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x8f(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(1,temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1034,11 +1034,11 @@ static void op_FDCB_0x8f(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x90(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(2,temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1046,11 +1046,11 @@ static void op_FDCB_0x90(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x91(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(2,temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1058,11 +1058,11 @@ static void op_FDCB_0x91(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x92(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(2,temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1070,11 +1070,11 @@ static void op_FDCB_0x92(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x93(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(2,temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1082,11 +1082,11 @@ static void op_FDCB_0x93(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x94(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(2,temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1094,11 +1094,11 @@ static void op_FDCB_0x94(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x95(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(2,temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1106,10 +1106,10 @@ static void op_FDCB_0x95(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x96(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(2,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1117,11 +1117,11 @@ static void op_FDCB_0x96(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x97(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(2,temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1129,11 +1129,11 @@ static void op_FDCB_0x97(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x98(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(3,temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1141,11 +1141,11 @@ static void op_FDCB_0x98(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x99(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(3,temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1153,11 +1153,11 @@ static void op_FDCB_0x99(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x9a(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(3,temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1165,11 +1165,11 @@ static void op_FDCB_0x9a(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x9b(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(3,temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1177,11 +1177,11 @@ static void op_FDCB_0x9b(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x9c(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(3,temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1189,11 +1189,11 @@ static void op_FDCB_0x9c(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x9d(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(3,temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1201,10 +1201,10 @@ static void op_FDCB_0x9d(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x9e(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(3,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1212,11 +1212,11 @@ static void op_FDCB_0x9e(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0x9f(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(3,temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1224,11 +1224,11 @@ static void op_FDCB_0x9f(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xa0(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(4,temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1236,11 +1236,11 @@ static void op_FDCB_0xa0(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xa1(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(4,temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1248,11 +1248,11 @@ static void op_FDCB_0xa1(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xa2(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(4,temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1260,11 +1260,11 @@ static void op_FDCB_0xa2(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xa3(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(4,temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1272,11 +1272,11 @@ static void op_FDCB_0xa3(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xa4(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(4,temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1284,11 +1284,11 @@ static void op_FDCB_0xa4(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xa5(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(4,temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1296,10 +1296,10 @@ static void op_FDCB_0xa5(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xa6(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(4,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1307,11 +1307,11 @@ static void op_FDCB_0xa6(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xa7(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(4,temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1319,11 +1319,11 @@ static void op_FDCB_0xa7(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xa8(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(5,temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1331,11 +1331,11 @@ static void op_FDCB_0xa8(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xa9(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(5,temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1343,11 +1343,11 @@ static void op_FDCB_0xa9(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xaa(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(5,temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1355,11 +1355,11 @@ static void op_FDCB_0xaa(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xab(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(5,temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1367,11 +1367,11 @@ static void op_FDCB_0xab(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xac(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(5,temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1379,11 +1379,11 @@ static void op_FDCB_0xac(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xad(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(5,temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1391,10 +1391,10 @@ static void op_FDCB_0xad(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xae(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(5,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1402,11 +1402,11 @@ static void op_FDCB_0xae(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xaf(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(5,temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1414,11 +1414,11 @@ static void op_FDCB_0xaf(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xb0(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(6,temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1426,11 +1426,11 @@ static void op_FDCB_0xb0(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xb1(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(6,temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1438,11 +1438,11 @@ static void op_FDCB_0xb1(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xb2(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(6,temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1450,11 +1450,11 @@ static void op_FDCB_0xb2(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xb3(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(6,temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1462,11 +1462,11 @@ static void op_FDCB_0xb3(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xb4(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(6,temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1474,11 +1474,11 @@ static void op_FDCB_0xb4(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xb5(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(6,temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1486,10 +1486,10 @@ static void op_FDCB_0xb5(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xb6(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(6,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1497,11 +1497,11 @@ static void op_FDCB_0xb6(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xb7(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(6,temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1509,11 +1509,11 @@ static void op_FDCB_0xb7(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xb8(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(7,temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1521,11 +1521,11 @@ static void op_FDCB_0xb8(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xb9(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(7,temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1533,11 +1533,11 @@ static void op_FDCB_0xb9(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xba(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(7,temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1545,11 +1545,11 @@ static void op_FDCB_0xba(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xbb(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(7,temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1557,11 +1557,11 @@ static void op_FDCB_0xbb(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xbc(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(7,temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1569,11 +1569,11 @@ static void op_FDCB_0xbc(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xbd(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(7,temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1581,10 +1581,10 @@ static void op_FDCB_0xbd(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xbe(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(7,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1592,11 +1592,11 @@ static void op_FDCB_0xbe(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xbf(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	RES(7,temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1604,11 +1604,11 @@ static void op_FDCB_0xbf(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xc0(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(0,temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1616,11 +1616,11 @@ static void op_FDCB_0xc0(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xc1(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(0,temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1628,11 +1628,11 @@ static void op_FDCB_0xc1(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xc2(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(0,temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1640,11 +1640,11 @@ static void op_FDCB_0xc2(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xc3(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(0,temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1652,11 +1652,11 @@ static void op_FDCB_0xc3(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xc4(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(0,temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1664,11 +1664,11 @@ static void op_FDCB_0xc4(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xc5(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(0,temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1676,10 +1676,10 @@ static void op_FDCB_0xc5(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xc6(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(0,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1687,11 +1687,11 @@ static void op_FDCB_0xc6(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xc7(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(0,temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1699,11 +1699,11 @@ static void op_FDCB_0xc7(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xc8(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(1,temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1711,11 +1711,11 @@ static void op_FDCB_0xc8(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xc9(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(1,temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1723,11 +1723,11 @@ static void op_FDCB_0xc9(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xca(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(1,temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1735,11 +1735,11 @@ static void op_FDCB_0xca(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xcb(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(1,temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1747,11 +1747,11 @@ static void op_FDCB_0xcb(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xcc(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(1,temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1759,11 +1759,11 @@ static void op_FDCB_0xcc(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xcd(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(1,temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1771,10 +1771,10 @@ static void op_FDCB_0xcd(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xce(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(1,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1782,11 +1782,11 @@ static void op_FDCB_0xce(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xcf(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(1,temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1794,11 +1794,11 @@ static void op_FDCB_0xcf(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xd0(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(2,temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1806,11 +1806,11 @@ static void op_FDCB_0xd0(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xd1(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(2,temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1818,11 +1818,11 @@ static void op_FDCB_0xd1(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xd2(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(2,temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1830,11 +1830,11 @@ static void op_FDCB_0xd2(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xd3(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(2,temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1842,11 +1842,11 @@ static void op_FDCB_0xd3(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xd4(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(2,temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1854,11 +1854,11 @@ static void op_FDCB_0xd4(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xd5(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(2,temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1866,10 +1866,10 @@ static void op_FDCB_0xd5(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xd6(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(2,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1877,11 +1877,11 @@ static void op_FDCB_0xd6(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xd7(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(2,temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1889,11 +1889,11 @@ static void op_FDCB_0xd7(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xd8(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(3,temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1901,11 +1901,11 @@ static void op_FDCB_0xd8(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xd9(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(3,temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1913,11 +1913,11 @@ static void op_FDCB_0xd9(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xda(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(3,temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1925,11 +1925,11 @@ static void op_FDCB_0xda(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xdb(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(3,temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1937,11 +1937,11 @@ static void op_FDCB_0xdb(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xdc(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(3,temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1949,11 +1949,11 @@ static void op_FDCB_0xdc(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xdd(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(3,temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1961,10 +1961,10 @@ static void op_FDCB_0xdd(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xde(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(3,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1972,11 +1972,11 @@ static void op_FDCB_0xde(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xdf(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(3,temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1984,11 +1984,11 @@ static void op_FDCB_0xdf(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xe0(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(4,temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -1996,11 +1996,11 @@ static void op_FDCB_0xe0(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xe1(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(4,temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2008,11 +2008,11 @@ static void op_FDCB_0xe1(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xe2(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(4,temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2020,11 +2020,11 @@ static void op_FDCB_0xe2(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xe3(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(4,temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2032,11 +2032,11 @@ static void op_FDCB_0xe3(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xe4(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(4,temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2044,11 +2044,11 @@ static void op_FDCB_0xe4(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xe5(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(4,temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2056,10 +2056,10 @@ static void op_FDCB_0xe5(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xe6(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(4,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2067,11 +2067,11 @@ static void op_FDCB_0xe6(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xe7(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(4,temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2079,11 +2079,11 @@ static void op_FDCB_0xe7(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xe8(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(5,temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2091,11 +2091,11 @@ static void op_FDCB_0xe8(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xe9(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(5,temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2103,11 +2103,11 @@ static void op_FDCB_0xe9(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xea(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(5,temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2115,11 +2115,11 @@ static void op_FDCB_0xea(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xeb(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(5,temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2127,11 +2127,11 @@ static void op_FDCB_0xeb(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xec(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(5,temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2139,11 +2139,11 @@ static void op_FDCB_0xec(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xed(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(5,temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2151,10 +2151,10 @@ static void op_FDCB_0xed(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xee(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(5,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2162,11 +2162,11 @@ static void op_FDCB_0xee(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xef(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(5,temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2174,11 +2174,11 @@ static void op_FDCB_0xef(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xf0(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(6,temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2186,11 +2186,11 @@ static void op_FDCB_0xf0(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xf1(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(6,temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2198,11 +2198,11 @@ static void op_FDCB_0xf1(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xf2(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(6,temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2210,11 +2210,11 @@ static void op_FDCB_0xf2(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xf3(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(6,temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2222,11 +2222,11 @@ static void op_FDCB_0xf3(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xf4(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(6,temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2234,11 +2234,11 @@ static void op_FDCB_0xf4(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xf5(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(6,temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2246,10 +2246,10 @@ static void op_FDCB_0xf5(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xf6(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(6,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2257,11 +2257,11 @@ static void op_FDCB_0xf6(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xf7(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(6,temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2269,11 +2269,11 @@ static void op_FDCB_0xf7(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xf8(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(7,temp_byte);
 	LD(B,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2281,11 +2281,11 @@ static void op_FDCB_0xf8(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xf9(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(7,temp_byte);
 	LD(C,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2293,11 +2293,11 @@ static void op_FDCB_0xf9(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xfa(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(7,temp_byte);
 	LD(D,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2305,11 +2305,11 @@ static void op_FDCB_0xfa(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xfb(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(7,temp_byte);
 	LD(E,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2317,11 +2317,11 @@ static void op_FDCB_0xfb(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xfc(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(7,temp_byte);
 	LD(H,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2329,11 +2329,11 @@ static void op_FDCB_0xfc(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xfd(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(7,temp_byte);
 	LD(L,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2341,10 +2341,10 @@ static void op_FDCB_0xfd(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xfe(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(7,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 
@@ -2352,11 +2352,11 @@ static void op_FDCB_0xfe(Z80EX_CONTEXT *cpu)
 static void op_FDCB_0xff(Z80EX_CONTEXT *cpu)
 {
 	MEMPTR=(IY+temp_byte_s);
-	READ_MEM(temp_byte,(IY+temp_byte_s),16);
+	READ_MEM(temp_byte,(IY+temp_byte_s),12);
 	SET(7,temp_byte);
 	LD(A,temp_byte);
-	WRITE_MEM((IY+temp_byte_s),temp_byte,20);
-	T_WAIT_UNTIL(23);
+	WRITE_MEM((IY+temp_byte_s),temp_byte,16);
+	T_WAIT_UNTIL(19);
 	return;
 }
 

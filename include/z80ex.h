@@ -10,25 +10,7 @@
 #ifndef _Z80EX_H_INCLUDED
 #define _Z80EX_H_INCLUDED
 
-#ifdef __GNUC__
-#include <stdint.h>
-typedef uint8_t Z80EX_BYTE;
-typedef int8_t Z80EX_SIGNED_BYTE;
-typedef uint16_t Z80EX_WORD;
-typedef uint32_t Z80EX_DWORD;
-#else
-#ifdef _MSC_VER
-typedef unsigned __int8 Z80EX_BYTE;
-typedef signed __int8 Z80EX_SIGNED_BYTE;
-typedef unsigned __int16 Z80EX_WORD;
-typedef unsigned __int32 Z80EX_DWORD;
-#else
-typedef unsigned char Z80EX_BYTE;
-typedef signed char Z80EX_SIGNED_BYTE;
-typedef unsigned short Z80EX_WORD;
-typedef unsigned int Z80EX_DWORD;
-#endif
-#endif
+#include "z80ex_common.h"
 
 typedef
 enum {regAF,regBC,regDE,regHL,regAF_,regBC_,regDE_,regHL_,regIX,regIY,regPC,regSP,regI,regR,regR7,regIM/*0,1 или 2*/,regIFF1,regIFF2}
@@ -79,9 +61,13 @@ extern Z80EX_CONTEXT *z80ex_create(z80ex_mread_cb mrcb_fn, void *mrcb_data,
 /*destroy CPU*/
 extern void z80ex_destroy(Z80EX_CONTEXT *cpu);
 
-/*execute next opcode, return number of T-states*/
+/*do next opcode (instruction or prefix), return number of T-states eaten*/
 extern int z80ex_step(Z80EX_CONTEXT *cpu);
 
+/*return type of last opcode, processed with z80ex_step.
+type will be 0 for complete instruction, or prefix value for dd/fd/cb/ed prefixes*/
+extern Z80EX_BYTE z80ex_last_op_type(Z80EX_CONTEXT *cpu);
+	
 /*set T-state callback*/
 extern void z80ex_set_tstate_callback(Z80EX_CONTEXT *cpu, z80ex_tstate_cb cb_fn, void *user_data);
 
@@ -106,7 +92,7 @@ extern void z80ex_set_reg(Z80EX_CONTEXT *cpu, Z80_REG_T reg, Z80EX_WORD value);
 /*returns 1 if CPU doing HALT instruction now*/
 extern int z80ex_doing_halt(Z80EX_CONTEXT *cpu);
 
-/*when called from callbacks, returns current T-state of executing opcode,
+/*when called from callbacks, returns current T-state of executing opcode (instruction or prefix),
 else returns t-states taken by last opcode executed*/
 extern int z80ex_op_tstate(Z80EX_CONTEXT *cpu);
 

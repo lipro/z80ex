@@ -5,6 +5,7 @@ opcode="asm"
 
 in mnemonics:
 
-@ means word
+@ - word
 # - byte
-$ - 1 byte displacement
+$ - displacement for IX/IY+d
+% - jump offset

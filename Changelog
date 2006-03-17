@@ -1,3 +1,8 @@
+17.03.2006 - 0.14pre1
+- massive code reorganisation
+- include files are now installed under include/z80ex
+- disassembler added
+
 15.03.2006 - release 0.13
 - more MEMPTR emulation
 - fixed nasty bug in DD/FD prefixes behavior
