@@ -1,2 +1,1 @@
-- figure out how OUTI/OUTD and CP* commands affects MEMPTR register...
-	hardware tests needed.
+? BUSACK/BUSREQ signals emulation

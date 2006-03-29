@@ -18,7 +18,7 @@ PROJ := z80ex
 EMU := libz80ex
 DASM := libz80ex_dasm
 VERSION := 0.14
-VER_STR := pre1
+VER_STR :=
 API_V := 0
 
 c_files:= z80ex.c z80ex_dasm.c

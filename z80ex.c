@@ -216,13 +216,11 @@ LIB_EXPORT int z80ex_nmi(Z80EX_CONTEXT *cpu)
 
 	TSTATES(5); 
 	
-	TSTATES(1);
 	cpu->mwrite_cb(cpu, --SP, cpu->pc.b.h, cpu->mwrite_cb_user_data); /*PUSH PC -- high byte */
-	TSTATES(2);
+	TSTATES(3);
 		
-	TSTATES(1);
 	cpu->mwrite_cb(cpu, --SP, cpu->pc.b.l, cpu->mwrite_cb_user_data); /*PUSH PC -- low byte */
-	TSTATES(2);
+	TSTATES(3);
 	
 	PC=0x0066;
 	MEMPTR=PC; /*FIXME: is it really so?*/
@@ -261,9 +259,9 @@ LIB_EXPORT int z80ex_int(Z80EX_CONTEXT *cpu)
 	switch(IM)
 	{
 		case IM0:
+			iv=READ_OP_M1();
 			TSTATES(2); /*two extra wait-states*/
 
-			iv=READ_OP_M1();
 			opcodes_base[iv](cpu);
 
 			tt=cpu->tstate;
@@ -287,8 +285,8 @@ LIB_EXPORT int z80ex_int(Z80EX_CONTEXT *cpu)
 			/*takes 19 clock periods to complete (seven to fetch the
 			lower eight bits from the interrupting device, six to save the program
 			counter, and six to obtain the jump address)*/
-			T_WAIT_UNTIL(7);
 			iv=READ_OP();
+			T_WAIT_UNTIL(7);
 			inttemp=(0x100*I)+iv;
 		
 			PUSH(PC,7,10);

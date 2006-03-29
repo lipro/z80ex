@@ -1,3 +1,8 @@
+29.03.2006 - 0.14
+- full memptr (BIT n,(HL) flags) support!
+  it seems that all undocumented z80 features are emulated now.
+- undocumented flags were fixed for bit n,reg8
+
 17.03.2006 - 0.14pre1
 - massive code reorganisation
 - include files are now installed under include/z80ex
