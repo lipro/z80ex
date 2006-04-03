@@ -84,6 +84,10 @@ LIB_EXPORT int z80ex_step(Z80EX_CONTEXT *cpu)
 	cpu->op_tstate=0;
 	
 	opcode=READ_OP_M1(); /*fetch opcode*/
+	if(cpu->int_vector_req)
+	{
+		TSTATES(2); /*interrupt eats two extra wait-states*/
+	}
 	R++; /*R increased by one on every first M1 cycle*/
 
 	T_WAIT_UNTIL(4); /*M1 cycle eats min 4 t-states*/
@@ -207,7 +211,7 @@ LIB_EXPORT void z80ex_set_tstate_callback(Z80EX_CONTEXT *cpu, z80ex_tstate_cb cb
 /*non-maskable interrupt*/
 LIB_EXPORT int z80ex_nmi(Z80EX_CONTEXT *cpu)
 {
-	if(cpu->doing_opcode || cpu->noint_once) return(0);
+	if(cpu->doing_opcode || cpu->noint_once || cpu->prefix) return(0);
 	
 	cpu->doing_opcode=1;
 	
@@ -240,7 +244,7 @@ LIB_EXPORT int z80ex_int(Z80EX_CONTEXT *cpu)
 	/*If the INT line is low and IFF1 is set, and there's no opcode executing just now,
 	a maskable interrupt is accepted, whether or not the
 	last INT routine has finished*/
-	if(!IFF1 || cpu->noint_once || cpu->doing_opcode) return(0);
+	if(!IFF1 || cpu->noint_once || cpu->doing_opcode || cpu->prefix) return(0);
 
 	cpu->tstate=0;
 	cpu->op_tstate=0;
@@ -251,22 +255,16 @@ LIB_EXPORT int z80ex_int(Z80EX_CONTEXT *cpu)
 	occurring which would end up as an infinite loop*/
 	IFF1=IFF2=0;
 
-	R++; /*accepting interrupt increases R by one*/
-	
 	cpu->int_vector_req=1;
 	cpu->doing_opcode=1;
 	
 	switch(IM)
 	{
 		case IM0:
-			iv=READ_OP_M1();
-			TSTATES(2); /*two extra wait-states*/
-
-			opcodes_base[iv](cpu);
-
-			tt=cpu->tstate;
+			/*note: there's no need to do R++ and WAITs here, it'll be handled by z80ex_step*/
+			tt=z80ex_step(cpu);
 		
-			while(!z80ex_last_op_type(cpu)) /*this is not the end?*/
+			while(cpu->prefix) /*this is not the end?*/
 			{
 				tt+=z80ex_step(cpu);
 			}
@@ -275,13 +273,15 @@ LIB_EXPORT int z80ex_int(Z80EX_CONTEXT *cpu)
 			break;
 		
 		case IM1:
+			R++; 
 			TSTATES(2); /*two extra wait-states*/
 			/*An RST 38h is executed, no matter what value is put on the bus or what
 			value the I register has. 13 t-states (2 extra + 11 for RST).*/
 			opcodes_base[0xff](cpu); /*RST38*/
 			break;
 		
-		case IM2: 
+		case IM2:
+			R++; 
 			/*takes 19 clock periods to complete (seven to fetch the
 			lower eight bits from the interrupting device, six to save the program
 			counter, and six to obtain the jump address)*/

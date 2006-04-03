@@ -17,7 +17,7 @@ ENDIANNESS := WORDS_LITTLE_ENDIAN
 PROJ := z80ex
 EMU := libz80ex
 DASM := libz80ex_dasm
-VERSION := 0.14
+VERSION := 0.15
 VER_STR :=
 API_V := 0
 

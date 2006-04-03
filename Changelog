@@ -1,3 +1,6 @@
+03.04.2006 - 0.15 (major bugfix release)
+- nasty deadlock in IM0 mode was eliminated
+
 29.03.2006 - 0.14
 - full memptr (BIT n,(HL) flags) support!
   it seems that all undocumented z80 features are emulated now.
