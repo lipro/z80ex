@@ -4,7 +4,7 @@
 #################################################################
 
 INSTALL_PREFIX := /usr/local
-CC := gcc -ansi -pedantic -Wall -pipe -O2 -I. -I./include
+CC := gcc -fPIC -ansi -pedantic -Wall -pipe -O2 -I. -I./include
 LINKER := gcc
 
 #little/big endian, choose one:
@@ -17,7 +17,7 @@ ENDIANNESS := WORDS_LITTLE_ENDIAN
 PROJ := z80ex
 EMU := libz80ex
 DASM := libz80ex_dasm
-VERSION := 0.15
+VERSION := 0.16
 VER_STR :=
 API_V := 0
 

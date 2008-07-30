@@ -80,6 +80,7 @@ LIB_EXPORT int z80ex_step(Z80EX_CONTEXT *cpu)
 	
 	cpu->doing_opcode=1;
 	cpu->noint_once=0;
+	cpu->reset_PV_on_int=0;
 	cpu->tstate=0;
 	cpu->op_tstate=0;
 	
@@ -154,7 +155,7 @@ LIB_EXPORT void z80ex_reset(Z80EX_CONTEXT *cpu)
 	PC=0x0000; IFF1=IFF2=0; IM=IM0;
 	AF=SP=BC=DE=HL=IX=IY=AF_=BC_=DE_=HL_=0xffff;
 	I=R=R7=0;
-	cpu->noint_once=0; cpu->halted=0;
+	cpu->noint_once=0; cpu->reset_PV_on_int=0; cpu->halted=0;
 	cpu->int_vector_req=0;
 	cpu->doing_opcode=0;
 	cpu->tstate=cpu->op_tstate=0;
@@ -212,10 +213,11 @@ LIB_EXPORT void z80ex_set_tstate_callback(Z80EX_CONTEXT *cpu, z80ex_tstate_cb cb
 LIB_EXPORT int z80ex_nmi(Z80EX_CONTEXT *cpu)
 {
 	if(cpu->doing_opcode || cpu->noint_once || cpu->prefix) return(0);
-	
+
 	cpu->doing_opcode=1;
 	
 	R++; /*accepting interrupt increases R by one*/
+	IFF2=IFF1;
 	IFF1=0;
 
 	TSTATES(5); 
@@ -254,6 +256,12 @@ LIB_EXPORT int z80ex_int(Z80EX_CONTEXT *cpu)
 	/*When an INT is accepted, both IFF1 and IFF2 are cleared, preventing another interrupt from
 	occurring which would end up as an infinite loop*/
 	IFF1=IFF2=0;
+
+	/*original (NMOS) zilog z80 bug:*/
+	/*If a LD A,I or LD A,R (which copy IFF2 to the P/V flag) is interrupted, then the P/V flag is reset, even if interrupts were enabled beforehand.*/
+	/*(this bug was fixed in CMOS version of z80)*/
+	if(cpu->reset_PV_on_int) {F = (F & ~FLAG_P);}
+	cpu->reset_PV_on_int=0;
 
 	cpu->int_vector_req=1;
 	cpu->doing_opcode=1;
@@ -385,3 +393,19 @@ LIB_EXPORT int z80ex_doing_halt(Z80EX_CONTEXT *cpu)
 {
 	return(cpu->halted);
 }
+
+/*LIB_EXPORT int z80ex_get_noint_once(Z80EX_CONTEXT *cpu)
+{
+	return(cpu->noint_once);
+}*/
+
+LIB_EXPORT int z80ex_int_possible(Z80EX_CONTEXT *cpu)
+{
+	return((!IFF1 || cpu->noint_once || cpu->doing_opcode || cpu->prefix)? 0 : 1);
+}
+
+LIB_EXPORT int z80ex_nmi_possible(Z80EX_CONTEXT *cpu)
+{
+	return((cpu->noint_once || cpu->doing_opcode || cpu->prefix)? 0 : 1);
+}
+

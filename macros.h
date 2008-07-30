@@ -515,6 +515,7 @@ for using outside of certain opcode execution)*/
 {\
 	A=(R&0x7f) | (R7&0x80);\
 	F = ( F & FLAG_C ) | sz53_table[A] | ( IFF2 ? FLAG_V : 0 );\
+	cpu->reset_PV_on_int=1;\
 }
 
 #define LD_R_A() \
@@ -526,6 +527,7 @@ for using outside of certain opcode execution)*/
 {\
 	A=I;\
 	F = ( F & FLAG_C ) | sz53_table[A] | ( IFF2 ? FLAG_V : 0 );\
+	cpu->reset_PV_on_int=1;\
 }
 
 #define NEG() \

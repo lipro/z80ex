@@ -65,7 +65,7 @@ extern void z80ex_destroy(Z80EX_CONTEXT *cpu);
 extern int z80ex_step(Z80EX_CONTEXT *cpu);
 
 /*return type of last opcode, processed with z80ex_step.
-type will be 0 for complete instruction, or prefix value for dd/fd/cb/ed prefixes*/
+type will be 0 for complete instruction, or prefix value for dd/fd/cb/ed prefixes.*/
 extern Z80EX_BYTE z80ex_last_op_type(Z80EX_CONTEXT *cpu);
 	
 /*set T-state callback*/
@@ -97,7 +97,7 @@ else returns t-states taken by last opcode executed*/
 extern int z80ex_op_tstate(Z80EX_CONTEXT *cpu);
 
 /*generate <w_states> Wait-states. (T-state callback will be called for each of them).
-must be used in t-state callback or I/O callbacks to simulate WAIT signal or disabled CLK*/ 
+must be used to simulate WAIT signal or disabled CLK*/ 
 extern void z80ex_w_states(Z80EX_CONTEXT *cpu, unsigned w_states);
 
 /*spend one T-state doing nothing (often IO devices don't handle data request on
@@ -105,6 +105,11 @@ the first T-state, at which RD/WR goes active).
 for use in I/O callbacks*/
 extern void z80ex_next_t_state(Z80EX_CONTEXT *cpu);
 
+/*returns 1 if maskable interrupts are possible in current z80 state*/
+extern int z80ex_int_possible(Z80EX_CONTEXT *cpu);
+
+/*returns 1 if non-maskable interrupts are possible in current z80 state*/
+extern int z80ex_nmi_possible(Z80EX_CONTEXT *cpu);
 
 #ifdef __cplusplus
 }

@@ -1,3 +1,9 @@
+16.07.2008 - 0.16
+- LD A,R / LD A,I quirk implemented (If a LD A,I or LD A,R (which copy IFF2 to the P/V flag) is interrupted,
+  then the P/V flag is reset, even if interrupts were enabled beforehand)(thanks to Restorer)
+- NMI IFF2=IFF1 fix
+- added -fPIC option to compile flags (thanks to ander)
+
 03.04.2006 - 0.15 (major bugfix release)
 - nasty deadlock in IM0 mode was eliminated
 
