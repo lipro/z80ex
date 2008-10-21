@@ -24,7 +24,7 @@ typedef struct {
 
 #include "opcodes/opcodes_dasm.c"
 
-static char *formats[] = {
+static const char *formats[] = {
 	"#%02X", /*bytes*/	
 	"#%04X", /*words*/
 	"%d" /*WORDS_DEC, BYTES_DEC*/
@@ -40,9 +40,9 @@ LIB_EXPORT int z80ex_dasm(char *output, int output_size, unsigned flags, int *t_
 	int have_disp=0;
 	int out_len=0;
 	int bytes=0;
-	char *bytes_format=formats[0];
-	char *words_format=formats[1];
-	z80ex_opc_dasm *dasm = NULL;
+	const char *bytes_format=formats[0];
+	const char *words_format=formats[1];
+	const z80ex_opc_dasm *dasm = NULL;
 	static char stmp[STMP_SIZE];
 	
 	if(flags & WORDS_DEC) words_format = formats[2];

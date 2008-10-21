@@ -755,10 +755,10 @@ sub process_ofile
 	}
 	
 	
-	$$disasmt="\n\n/**/\nstatic z80ex_opc_dasm dasm_".$def."[0x100] = {\n";
+	$$disasmt="\n\n/**/\nstatic const z80ex_opc_dasm dasm_".$def."[0x100] = {\n";
 	
 	my $footer="\n\n/**/\n";
-	$footer .= "static z80ex_opcode_fn opcodes_".$def."[0x100] = {\n";
+	$footer .= "static const z80ex_opcode_fn opcodes_".$def."[0x100] = {\n";
 	
 	for($ii=0;$ii < 256;$ii++)
 	{

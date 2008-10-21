@@ -4,32 +4,41 @@
 #################################################################
 
 INSTALL_PREFIX := /usr/local
-CC := gcc -fPIC -ansi -pedantic -Wall -pipe -O2 -I. -I./include
+CC := gcc 
+ALL_CFLAGS := -fPIC -ansi -pedantic -Wall -pipe -O2 -I. -I./include 
 LINKER := gcc
 
-#little/big endian, choose one:
+#endianness (one of WORDS_LITTLE_ENDIAN, WORDS_BIG_ENDIAN)
 ENDIANNESS := WORDS_LITTLE_ENDIAN
 #ENDIANNESS := WORDS_BIG_ENDIAN
 
+#fast and rough opcode step emulation mode (0 - off, 1 - on)
+OPSTEP_FAST_AND_ROUGH := 0
 
 #################################################################
+
+ALL_CFLAGS += -D$(ENDIANNESS)
+
+ifneq ($(OPSTEP_FAST_AND_ROUGH),0)
+ALL_CFLAGS += -DZ80EX_OPSTEP_FAST_AND_ROUGH
+endif
 
 PROJ := z80ex
 EMU := libz80ex
 DASM := libz80ex_dasm
-VERSION := 0.16.1
+VERSION := 0.16.2
 VER_STR :=
 API_V := 0
 
-c_files:= z80ex.c z80ex_dasm.c
+c_files := z80ex.c z80ex_dasm.c
 
 %.o : %.c
-	${CC} -D$(ENDIANNESS) -c -o $@ $<	
+	${CC} ${ALL_CFLAGS} ${CFLAGS} -c -o $@ $<	
 
 .PHONY : all
 all:: static shared
 
-z80ex.o: include/z80ex.h include/z80ex_common.h daa_table.c typedefs.h macros.h opcodes/opcodes_base.c\
+z80ex.o: include/z80ex.h include/z80ex_common.h ptables.c typedefs.h macros.h opcodes/opcodes_base.c\
 opcodes/opcodes_dd.c opcodes/opcodes_fd.c opcodes/opcodes_cb.c\
 opcodes/opcodes_ed.c opcodes/opcodes_ddcb.c opcodes/opcodes_fdcb.c
 
@@ -60,7 +69,7 @@ install:
 dist: clean
 	rm -rf ./${PROJ}-${VERSION}${VER_STR}
 	ln -s ./ ./${PROJ}-${VERSION}${VER_STR}
-	tar --exclude ${PROJ}-${VERSION}${VER_STR}/${PROJ}-${VERSION}${VER_STR} --exclude ${PROJ}-${VERSION}${VER_STR}/${PROJ}-${VERSION}${VER_STR}.tar.gz -hcf - ./${PROJ}-${VERSION}${VER_STR}/ | gzip -f9 > ${PROJ}-${VERSION}${VER_STR}.tar.gz
+	tar --exclude z80ex.geany --exclude obsolete --exclude ${PROJ}-${VERSION}${VER_STR}/${PROJ}-${VERSION}${VER_STR} --exclude ${PROJ}-${VERSION}${VER_STR}/${PROJ}-${VERSION}${VER_STR}.tar.gz -hcf - ./${PROJ}-${VERSION}${VER_STR}/ | gzip -f9 > ${PROJ}-${VERSION}${VER_STR}.tar.gz
 	rm -rf ./${PROJ}-${VERSION}${VER_STR}
 
 #EOF

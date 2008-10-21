@@ -1,3 +1,11 @@
+
+*** These modified files were found in JOE when it aborted on Tue Oct 21 21:44:16 2008
+*** JOE was aborted by UNIX signal 1
+
+*** File '(Unnamed)'
+/home/boo/devel/zx/z80ex/Changelog
+
+*** File '/home/boo/devel/zx/z80ex/Changelog'
 28.09.2008 - 0.16.2
 - made build for Symbian possible (and maybe for other environments
   which does not support the use of writable static data in DLL's) (thanks to ander)

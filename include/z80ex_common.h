@@ -16,14 +16,18 @@
 #define LIB_EXPORT
 #endif
 
-#ifdef __GNUC__
+#if defined(__SYMBIAN32__)
+typedef unsigned char Z80EX_BYTE;
+typedef signed char Z80EX_SIGNED_BYTE;
+typedef unsigned short Z80EX_WORD;
+typedef unsigned int Z80EX_DWORD;
+#elif defined(__GNUC__)
 #include <stdint.h>
 typedef uint8_t Z80EX_BYTE;
 typedef int8_t Z80EX_SIGNED_BYTE;
 typedef uint16_t Z80EX_WORD;
 typedef uint32_t Z80EX_DWORD;
-#else
-#ifdef _MSC_VER
+#elif defined(_MSC_VER)
 typedef unsigned __int8 Z80EX_BYTE;
 typedef signed __int8 Z80EX_SIGNED_BYTE;
 typedef unsigned __int16 Z80EX_WORD;
@@ -33,7 +37,6 @@ typedef unsigned char Z80EX_BYTE;
 typedef signed char Z80EX_SIGNED_BYTE;
 typedef unsigned short Z80EX_WORD;
 typedef unsigned int Z80EX_DWORD;
-#endif
 #endif
 
 #endif

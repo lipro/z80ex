@@ -21,30 +21,7 @@
 #define temp_addr cpu->tmpaddr
 #define temp_word cpu->tmpword
 
-static int initialized=0;
-
-/* Whether a half carry occured or not can be determined by looking at
-the 3rd bit of the two arguments and the result; these are hashed
-into this table in the form r12, where r is the 3rd bit of the
-result, 1 is the 3rd bit of the 1st argument and 2 is the
-third bit of the 2nd argument; the tables differ for add and subtract
-operations */
-static const Z80EX_BYTE halfcarry_add_table[] =
-  { 0, FLAG_H, FLAG_H, FLAG_H, 0, 0, 0, FLAG_H };
-static const Z80EX_BYTE halfcarry_sub_table[] =
-  { 0, 0, FLAG_H, 0, FLAG_H, 0, FLAG_H, FLAG_H };
-
-/* Similarly, overflow can be determined by looking at the 7th bits; again
-the hash into this table is r12 */
-static const Z80EX_BYTE overflow_add_table[] = { 0, 0, 0, FLAG_V, FLAG_V, 0, 0, 0 };
-static const Z80EX_BYTE overflow_sub_table[] = { 0, FLAG_V, 0, 0, 0, 0, FLAG_V, 0 };
-
-/*flag tables*/
-static Z80EX_BYTE sz53_table[0x100]; /* The S, Z, 5 and 3 bits of the index */
-static Z80EX_BYTE parity_table[0x100]; /* The parity of the lookup value */
-static Z80EX_BYTE sz53p_table[0x100]; /* OR the above two tables together */
-
-#include "daa_table.c"
+#include "ptables.c"
 #include "opcodes/opcodes_base.c"
 #include "opcodes/opcodes_dd.c"
 #include "opcodes/opcodes_fd.c"
@@ -52,25 +29,6 @@ static Z80EX_BYTE sz53p_table[0x100]; /* OR the above two tables together */
 #include "opcodes/opcodes_ed.c"
 #include "opcodes/opcodes_ddcb.c"
 #include "opcodes/opcodes_fdcb.c"
-
-/* Initalise the tables used to set flags */
-static void init_tables(void)
-{
-	int i,j,k;
-	Z80EX_BYTE parity;
-
-	for(i=0;i<0x100;i++)
-	{
-		sz53_table[i]= i & ( FLAG_3 | FLAG_5 | FLAG_S );
-		j=i; parity=0;
-		for(k=0;k<8;k++) { parity ^= j & 1; j >>=1; }
-		parity_table[i]= ( parity ? 0 : FLAG_P );
-		sz53p_table[i] = sz53_table[i] | parity_table[i];
-	}
-
-	sz53_table[0]  |= FLAG_Z;
-	sz53p_table[0] |= FLAG_Z;
-}
 
 /* do one opcode (instruction or prefix) */
 LIB_EXPORT int z80ex_step(Z80EX_CONTEXT *cpu)
@@ -172,12 +130,6 @@ LIB_EXPORT Z80EX_CONTEXT *z80ex_create(
 )
 {
 	Z80EX_CONTEXT *cpu;
-
-	if(!initialized)
-	{
-		initialized=1;
-		init_tables();
-	}
 	
 	if((cpu=(Z80EX_CONTEXT *)malloc(sizeof(Z80EX_CONTEXT))) == NULL) return(NULL);
 	memset(cpu,0x00,sizeof(Z80EX_CONTEXT));
