@@ -1,3 +1,8 @@
+04.06.2009 - 1.1.17
+- ability to fetch z80ex version info at runtime, see z80ex_get_version()
+- makefile fixes and cleanups, OS X support
+- versioning scheme changed
+
 28.09.2008 - 0.16.2
 - made build for Symbian possible (and maybe for other environments
   which does not support the use of writable static data in DLL's) (thanks to ander)

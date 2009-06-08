@@ -46,7 +46,7 @@ int main(int argc,char *argv[])
 	while((addr-base_addr) < data_len)
 	{
 		printf("%04X: ",addr);
-		addr+=z80ex_dasm(buf,80,readbyte_cb,addr,0,&t,&t2,&base_addr);
+		addr+=z80ex_dasm(buf,80,0,&t,&t2,readbyte_cb,addr,&base_addr);
 		printf("%-15s  t=%d",buf,t);
 		if(t2) printf("/%d",t2);
 		printf("\n");

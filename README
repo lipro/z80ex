@@ -10,20 +10,21 @@ Features:
 - exact timings for each opcode (including I/O operations)
 - full support for all interrupt modes
 - ability to create several virtual CPUs
-- written in pure ANSI C
-- compiles as a library, which may be used via simple callback-based API
-- disassembler included
+- portable: written in pure ANSI C
+- builds as a library with simple callback-based API
+- disassembler included  
 
+Building (only GNU toolset is supported out of the box):
+--------------------------------------------------------
 
-Building and installation (*):
-------------------------------
+for build using GNU C (GCC,mingw,cygwin,DJGPP),
+issue 'gmake'. static and shared libraries will appear in "./lib".
+alternatively you may do "gmake static" for building static library only
+(use that with DJGPP 'coz it doesn't support shared libs),
+or "gmake shared" for building shared library only.
 
-for build using GNU C (GCC - unix, mingw/cygwin - Win32, DJGPP - DOS(**)),
-type 'gmake'. static and shared libraries will appear in "./lib".
-also you may do "gmake static" for building only static library,
-or "gmake shared" for only shared library.
-
-you may override some build parameters in a standard way: "gmake param=value"
+you may override some build parameters by editing the Makefile, or by
+giving command line arguments to gmake, e.g. "gmake parameter=value"
 these are:
 * ENDIANNESS -- CPU endianness, one of WORDS_LITTLE_ENDIAN, WORDS_BIG_ENDIAN
 * OPSTEP_FAST_AND_ROUGH -- fast and rough opcode step emulation mode (0 - off, 1 - on)
@@ -31,16 +32,13 @@ these are:
 	and tstate callback will feature will be disabled
 	which results in faster operation
 
-after successful build, issue "gmake install" as superuser.
-default install prefix is /usr/local, which can be changed in Makefile.
 
-*)
-support for non-GNU build methods is'nt included at the moment,
-feel free to contribute :)
+Installing (UNIX/MacOS X):
+--------------------------
 
-**)
-when building with DJGPP, use "gmake static" -- DOS does'nt support
-shared libraries
+issue "gmake install" as superuser.
+(default install prefix is /usr/local, which may be changed in Makefile.)
+then do "/sbin/ldconfig" as superuser to update DSO links and cache
 
 
 Usage:
@@ -51,7 +49,7 @@ emulator:
 include <z80ex/z80ex.h> in your sources,
 link with "libz80ex" (-lz80ex).
 
-for API documentation see "z80ex.h".
+for rather subtle API documentation see "z80ex.h".
 
 disassembler:
 
@@ -59,7 +57,7 @@ include <z80ex/z80ex_dasm.h> in your sources,
 link with "libz80ex_dasm" (-lz80ex_dasm).
 
 for API documentation see "z80ex_dasm.h".
-also look at the dasm.c at the "examples" directory
+also look at the "dasm.c" from the "examples" directory
 
 
 _____________________

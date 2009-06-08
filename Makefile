@@ -1,34 +1,42 @@
 # Z80ex Makefile
 # (for GNU make)
 #
-#################################################################
 
+#################################################################
+# You may tune these values to feet your setup:
+#################################################################
 INSTALL_PREFIX := /usr/local
 CC := gcc 
-ALL_CFLAGS := -fPIC -ansi -pedantic -Wall -pipe -O2 -I. -I./include 
+ALL_CFLAGS := -fPIC -fno-common -ansi -pedantic -Wall -pipe -O2 -I. -I./include 
 LINKER := gcc
 
-#endianness (one of WORDS_LITTLE_ENDIAN, WORDS_BIG_ENDIAN)
+#endianness (one of: WORDS_LITTLE_ENDIAN, WORDS_BIG_ENDIAN)
 ENDIANNESS := WORDS_LITTLE_ENDIAN
 #ENDIANNESS := WORDS_BIG_ENDIAN
 
 #fast and rough opcode step emulation mode (0 - off, 1 - on)
 OPSTEP_FAST_AND_ROUGH := 0
 
+
 #################################################################
-
-ALL_CFLAGS += -D$(ENDIANNESS)
-
-ifneq ($(OPSTEP_FAST_AND_ROUGH),0)
-ALL_CFLAGS += -DZ80EX_OPSTEP_FAST_AND_ROUGH
-endif
-
+# Do not change these writings. the world sanity depends on them:
+#################################################################
 PROJ := z80ex
 EMU := libz80ex
 DASM := libz80ex_dasm
-VERSION := 0.16.2
-VER_STR :=
-API_V := 0
+API_REVISION := 1
+VERSION_MAJOR:=1
+VERSION_MINOR:=17
+RELEASE_TYPE :=
+VERSION_STR:= ${API_REVISION}.${VERSION_MAJOR}.${VERSION_MINOR}${RELEASE_TYPE}
+
+OS=${shell uname -s}
+
+ALL_CFLAGS += -D${ENDIANNESS} -DZ80EX_VERSION_STR=${VERSION_STR} -DZ80EX_API_REVISION=${API_REVISION} -DZ80EX_VERSION_MAJOR=${VERSION_MAJOR} -DZ80EX_VERSION_MINOR=${VERSION_MINOR} -DZ80EX_RELEASE_TYPE=${RELEASE_TYPE} 
+
+ifneq (${OPSTEP_FAST_AND_ROUGH},0)
+ALL_CFLAGS += -DZ80EX_OPSTEP_FAST_AND_ROUGH
+endif
 
 c_files := z80ex.c z80ex_dasm.c
 
@@ -47,29 +55,42 @@ z80ex_dasm.o: include/z80ex_dasm.h include/z80ex_common.h opcodes/opcodes_dasm.c
 clean:
 	rm -f *.o
 	rm -f ./lib/*
-	rm -rf ./z80ex-${VERSION}.tar.gz
+	rm -rf ./z80ex-${VERSION_STR}.tar.gz
 
 static: z80ex.o z80ex_dasm.o
 	ar rs ./lib/${EMU}.a z80ex.o
 	ar rs ./lib/${DASM}.a z80ex_dasm.o
 	
 shared: z80ex.o z80ex_dasm.o
-	${LINKER} --shared -Wl,-soname,${EMU}.so.${API_V} -o ./lib/${EMU}.so.${API_V}.${VERSION} z80ex.o	
-	${LINKER} --shared -Wl,-soname,${DASM}.so.${API_V} -o ./lib/${DASM}.so.${API_V}.${VERSION} z80ex_dasm.o
+ifeq (${OS},Darwin)
+	${LINKER} -dynamiclib -compatibility_version ${API_REVISION} -current_version ${VERSION_STR} -install_name ${INSTALL_PREFIX}/lib/${EMU}.${API_REVISION}.dylib -o ./lib/${EMU}.${VERSION_STR}.dylib z80ex.o
+	${LINKER} -dynamiclib -compatibility_version ${API_REVISION} -current_version ${VERSION_STR} -install_name ${INSTALL_PREFIX}/lib/${DASM}.${API_REVISION}.dylib -o ./lib/${DASM}.${VERSION_STR}.dylib z80ex_dasm.o
+else
+	${LINKER} -shared -Wl,-soname,${EMU}.so.${API_REVISION} -o ./lib/${EMU}.so.${VERSION_STR} z80ex.o
+	${LINKER} -shared -Wl,-soname,${DASM}.so.${API_REVISION} -o ./lib/${DASM}.so.${VERSION_STR} z80ex_dasm.o	
+endif
 	
 install:
-	install -d $(INSTALL_PREFIX)/lib
-	install ./lib/* $(INSTALL_PREFIX)/lib
-	install -d $(INSTALL_PREFIX)/include/z80ex
-	install -m 0664 ./include/* $(INSTALL_PREFIX)/include/z80ex
-	ln -sf ${EMU}.so.${API_V}.${VERSION} $(INSTALL_PREFIX)/lib/${EMU}.so
-	ln -sf ${DASM}.so.${API_V}.${VERSION} $(INSTALL_PREFIX)/lib/${DASM}.so	
-	/sbin/ldconfig
+	install -d ${INSTALL_PREFIX}/lib
+	install ./lib/* ${INSTALL_PREFIX}/lib
+	install -d ${INSTALL_PREFIX}/include/z80ex
+	install -m 0664 ./include/* ${INSTALL_PREFIX}/include/z80ex
+ifeq (${OS},Darwin)
+	ln -sf ${EMU}.${VERSION_STR}.dylib ${INSTALL_PREFIX}/lib/${EMU}.${API_REVISION}.dylib
+	ln -sf ${EMU}.${VERSION_STR}.dylib ${INSTALL_PREFIX}/lib/${EMU}.dylib
+	ln -sf ${DASM}.${VERSION_STR}.dylib ${INSTALL_PREFIX}/lib/${DASM}.${API_REVISION}.dylib
+	ln -sf ${DASM}.${VERSION_STR}.dylib ${INSTALL_PREFIX}/lib/${DASM}.dylib	
+else
+	ln -sf ${EMU}.so.${VERSION_STR} ${INSTALL_PREFIX}/lib/${EMU}.so.${API_REVISION}
+	ln -sf ${EMU}.so.${VERSION_STR} ${INSTALL_PREFIX}/lib/${EMU}.so
+	ln -sf ${DASM}.so.${VERSION_STR} ${INSTALL_PREFIX}/lib/${DASM}.so.${API_REVISION}
+	ln -sf ${DASM}.so.${VERSION_STR} ${INSTALL_PREFIX}/lib/${DASM}.so		
+endif	
 
 dist: clean
-	rm -rf ./${PROJ}-${VERSION}${VER_STR}
-	ln -s ./ ./${PROJ}-${VERSION}${VER_STR}
-	tar --exclude z80ex.geany --exclude obsolete --exclude ${PROJ}-${VERSION}${VER_STR}/${PROJ}-${VERSION}${VER_STR} --exclude ${PROJ}-${VERSION}${VER_STR}/${PROJ}-${VERSION}${VER_STR}.tar.gz -hcf - ./${PROJ}-${VERSION}${VER_STR}/ | gzip -f9 > ${PROJ}-${VERSION}${VER_STR}.tar.gz
-	rm -rf ./${PROJ}-${VERSION}${VER_STR}
+	rm -rf ./${PROJ}-${VERSION_STR}${RELEASE_TYPE}
+	ln -s ./ ./${PROJ}-${VERSION_STR}${RELEASE_TYPE}
+	tar --exclude z80ex.geany --exclude obsolete --exclude ${PROJ}-${VERSION_STR}${RELEASE_TYPE}/${PROJ}-${VERSION_STR}${RELEASE_TYPE} --exclude ${PROJ}-${VERSION_STR}${RELEASE_TYPE}/${PROJ}-${VERSION_STR}${RELEASE_TYPE}.tar.gz -hcf - ./${PROJ}-${VERSION_STR}${RELEASE_TYPE}/ | gzip -f9 > ${PROJ}-${VERSION_STR}${RELEASE_TYPE}.tar.gz
+	rm -rf ./${PROJ}-${VERSION_STR}${RELEASE_TYPE}
 
 #EOF
