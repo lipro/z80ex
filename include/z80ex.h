@@ -1,8 +1,9 @@
 /*
- * Z80~Ex, ZILoG Z80 CPU emulator.
+ * Z80Ex, ZILoG Z80 CPU emulator.
  *
- * by Boo-boo [boo_boo(^at^)inbox.ru]
- * contains code from the FUSE project (http://fuse-emulator.sourceforge.net)
+ * by Pigmaker57 aka boo_boo [pigmaker57@kahoh57.info]
+ *
+ * contains some code from the FUSE project (http://fuse-emulator.sourceforge.net)
  * Released under GNU GPL v2
  *
  */

@@ -1,3 +1,10 @@
+02.01.2013 - 1.1.20
+- cleanup of included build documentation
+- email adress change 
+
+01.09.2012
+- TOOLS_PREFIX Makefile option, useful for cross-compiling [Stewart Kay]
+
 21.01.2010 - 1.1.19
 - removed IFF2=IFF1 on NMI. it's contrary to zilog z80 docs, but is true
 (proved by Restorer)

@@ -3,12 +3,16 @@
 #
 
 #################################################################
-# You may tune these values to feet your setup:
+# You may tune these values to fit your setup:
 #################################################################
 INSTALL_PREFIX := /usr/local
-CC := gcc 
+TOOLS_PREFIX :=
+
+CC := $(TOOLS_PREFIX)gcc 
+LINKER := $(TOOLS_PREFIX)gcc
+AR := $(TOOLS_PREFIX)ar
+
 ALL_CFLAGS := -fPIC -fno-common -ansi -pedantic -Wall -pipe -O2 -I. -I./include 
-LINKER := gcc
 
 #endianness (one of: WORDS_LITTLE_ENDIAN, WORDS_BIG_ENDIAN)
 ENDIANNESS := WORDS_LITTLE_ENDIAN
@@ -19,14 +23,14 @@ OPSTEP_FAST_AND_ROUGH := 0
 
 
 #################################################################
-# Do not change these writings. the world sanity depends on them:
+# Do not change these:
 #################################################################
 PROJ := z80ex
 EMU := libz80ex
 DASM := libz80ex_dasm
 API_REVISION := 1
 VERSION_MAJOR:=1
-VERSION_MINOR:=19
+VERSION_MINOR:=20
 RELEASE_TYPE :=
 VERSION_STR:= ${API_REVISION}.${VERSION_MAJOR}.${VERSION_MINOR}${RELEASE_TYPE}
 
@@ -58,8 +62,8 @@ clean:
 	rm -rf ./z80ex-${VERSION_STR}.tar.gz
 
 static: z80ex.o z80ex_dasm.o
-	ar rs ./lib/${EMU}.a z80ex.o
-	ar rs ./lib/${DASM}.a z80ex_dasm.o
+	${AR} rs ./lib/${EMU}.a z80ex.o
+	${AR} rs ./lib/${DASM}.a z80ex_dasm.o
 	
 shared: z80ex.o z80ex_dasm.o
 ifeq (${OS},Darwin)
