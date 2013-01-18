@@ -1,3 +1,7 @@
+19.01.2013 - 1.1.20rev1
+- fixed library version mismatch between Makefile and CMakeLists.txt 
+	(thanks to John Paul Adrian Glaubitz)
+
 02.01.2013 - 1.1.20
 - cleanup of included build documentation
 - email adress change 
