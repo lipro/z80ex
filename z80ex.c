@@ -33,9 +33,10 @@
 #include "opcodes/opcodes_fdcb.c"
 
 #define DOQUOTE(x) #x
+#define TOSTRING(x) DOQUOTE(x)
 
-static char revision_type[]=DOQUOTE(Z80EX_RELEASE_TYPE);
-static char ver_str[]=DOQUOTE(Z80EX_VERSION_STR);
+static char revision_type[]=TOSTRING(Z80EX_RELEASE_TYPE);
+static char ver_str[]=TOSTRING(Z80EX_VERSION_STR);
 static Z80EX_VERSION version = {Z80EX_API_REVISION, Z80EX_VERSION_MAJOR, Z80EX_VERSION_MINOR, revision_type, ver_str};
 
 LIB_EXPORT Z80EX_VERSION *z80ex_get_version()
