@@ -182,6 +182,36 @@ LIB_EXPORT void z80ex_set_reti_callback(Z80EX_CONTEXT *cpu, z80ex_reti_cb cb_fn,
 	cpu->reti_cb_user_data=user_data;
 }
 
+LIB_EXPORT void z80ex_set_memread_callback(Z80EX_CONTEXT *cpu, z80ex_mread_cb mrcb_fn, void *mrcb_data)
+{
+	cpu->mread_cb=mrcb_fn;
+	cpu->mread_cb_user_data=mrcb_data;
+}
+
+LIB_EXPORT void z80ex_set_memwrite_callback(Z80EX_CONTEXT *cpu, z80ex_mwrite_cb mwcb_fn, void *mwcb_data)
+{
+	cpu->mwrite_cb=mwcb_fn;
+	cpu->mwrite_cb_user_data=mwcb_data;	
+}
+
+LIB_EXPORT void z80ex_set_portread_callback(Z80EX_CONTEXT *cpu, z80ex_pread_cb prcb_fn, void *prcb_data)
+{
+	cpu->pread_cb=prcb_fn;
+	cpu->pread_cb_user_data=prcb_data;
+}
+
+LIB_EXPORT void z80ex_set_portwrite_callback(Z80EX_CONTEXT *cpu, z80ex_pwrite_cb pwcb_fn, void *pwcb_data)
+{
+	cpu->pwrite_cb=pwcb_fn;
+	cpu->pwrite_cb_user_data=pwcb_data;
+}
+
+LIB_EXPORT void z80ex_set_intread_callback(Z80EX_CONTEXT *cpu, z80ex_intread_cb ircb_fn, void *ircb_data)
+{
+	cpu->intread_cb=ircb_fn;
+	cpu->intread_cb_user_data=ircb_data;
+}
+
 /*non-maskable interrupt*/
 LIB_EXPORT int z80ex_nmi(Z80EX_CONTEXT *cpu)
 {
