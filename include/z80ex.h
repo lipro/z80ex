@@ -88,6 +88,21 @@ extern void z80ex_set_tstate_callback(Z80EX_CONTEXT *cpu, z80ex_tstate_cb cb_fn,
 /*set RETI callback*/
 extern void z80ex_set_reti_callback(Z80EX_CONTEXT *cpu, z80ex_reti_cb cb_fn, void *user_data);
 
+/*set memory read callback*/
+extern void z80ex_set_memread_callback(Z80EX_CONTEXT *cpu, z80ex_mread_cb mrcb_fn, void *mrcb_data);
+
+/*set memory write callback*/
+extern void z80ex_set_memwrite_callback(Z80EX_CONTEXT *cpu, z80ex_mwrite_cb mwcb_fn, void *mwcb_data);
+
+/*set port read callback*/
+extern void z80ex_set_portread_callback(Z80EX_CONTEXT *cpu, z80ex_pread_cb prcb_fn, void *prcb_data);
+
+/*set port write callback*/
+extern void z80ex_set_portwrite_callback(Z80EX_CONTEXT *cpu, z80ex_pwrite_cb pwcb_fn, void *pwcb_data);
+
+/*set INT read callback*/
+extern void z80ex_set_intread_callback(Z80EX_CONTEXT *cpu, z80ex_intread_cb ircb_fn, void *ircb_data);
+
 /*maskable interrupt*/
 /*returns number of T-states if interrupt was accepted, otherwise 0*/
 extern int z80ex_int(Z80EX_CONTEXT *cpu);

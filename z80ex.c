@@ -8,6 +8,7 @@
  *
  */
 
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -31,13 +32,11 @@
 #include "opcodes/opcodes_ddcb.c"
 #include "opcodes/opcodes_fdcb.c"
 
-/*#define _DOQUOTE(x) #x
-#define DOQUOTE(x) _DOQUOTE(x)*/
-
 #define DOQUOTE(x) #x
+#define TOSTRING(x) DOQUOTE(x)
 
-static char revision_type[]=DOQUOTE(Z80EX_RELEASE_TYPE);
-static char ver_str[]=DOQUOTE(Z80EX_VERSION_STR);
+static char revision_type[]=TOSTRING(Z80EX_RELEASE_TYPE);
+static char ver_str[]=TOSTRING(Z80EX_VERSION_STR);
 static Z80EX_VERSION version = {Z80EX_API_REVISION, Z80EX_VERSION_MAJOR, Z80EX_VERSION_MINOR, revision_type, ver_str};
 
 LIB_EXPORT Z80EX_VERSION *z80ex_get_version()
@@ -105,6 +104,7 @@ LIB_EXPORT int z80ex_step(Z80EX_CONTEXT *cpu)
 					
 				default:
 					/*this must'nt happen!*/
+					assert(0);
 					break;
 			}
 		
@@ -180,6 +180,36 @@ LIB_EXPORT void z80ex_set_reti_callback(Z80EX_CONTEXT *cpu, z80ex_reti_cb cb_fn,
 {
 	cpu->reti_cb=cb_fn;
 	cpu->reti_cb_user_data=user_data;
+}
+
+LIB_EXPORT void z80ex_set_memread_callback(Z80EX_CONTEXT *cpu, z80ex_mread_cb mrcb_fn, void *mrcb_data)
+{
+	cpu->mread_cb=mrcb_fn;
+	cpu->mread_cb_user_data=mrcb_data;
+}
+
+LIB_EXPORT void z80ex_set_memwrite_callback(Z80EX_CONTEXT *cpu, z80ex_mwrite_cb mwcb_fn, void *mwcb_data)
+{
+	cpu->mwrite_cb=mwcb_fn;
+	cpu->mwrite_cb_user_data=mwcb_data;	
+}
+
+LIB_EXPORT void z80ex_set_portread_callback(Z80EX_CONTEXT *cpu, z80ex_pread_cb prcb_fn, void *prcb_data)
+{
+	cpu->pread_cb=prcb_fn;
+	cpu->pread_cb_user_data=prcb_data;
+}
+
+LIB_EXPORT void z80ex_set_portwrite_callback(Z80EX_CONTEXT *cpu, z80ex_pwrite_cb pwcb_fn, void *pwcb_data)
+{
+	cpu->pwrite_cb=pwcb_fn;
+	cpu->pwrite_cb_user_data=pwcb_data;
+}
+
+LIB_EXPORT void z80ex_set_intread_callback(Z80EX_CONTEXT *cpu, z80ex_intread_cb ircb_fn, void *ircb_data)
+{
+	cpu->intread_cb=ircb_fn;
+	cpu->intread_cb_user_data=ircb_data;
 }
 
 /*non-maskable interrupt*/
@@ -344,7 +374,7 @@ LIB_EXPORT void z80ex_set_reg(Z80EX_CONTEXT *cpu, Z80_REG_T reg, Z80EX_WORD valu
 		case regSP: SP=value; return;
 		case regI: I=(value & 0xff); return;
 		case regR: R=(value & 0xff); return;
-		case regR7: R7=(value & 0xff); return;	
+		case regR7: R7=(value & 0xff); return;
 		case regIM:
 			switch(value & 0x03)
 			{
@@ -355,8 +385,6 @@ LIB_EXPORT void z80ex_set_reg(Z80EX_CONTEXT *cpu, Z80_REG_T reg, Z80EX_WORD valu
 		case regIFF1: IFF1=(value & 0x01); return;
 		case regIFF2: IFF2=(value & 0x01); return;
 	}
-	
-	return;
 }
 
 LIB_EXPORT int z80ex_op_tstate(Z80EX_CONTEXT *cpu)

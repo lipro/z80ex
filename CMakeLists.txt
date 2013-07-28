@@ -3,8 +3,8 @@ project (z80ex)
 
 set (API_REVISION 1)
 set (VERSION_MAJOR 1)
-set (VERSION_MINOR 20)
-set (RELEASE_TYPE "rev1")
+set (VERSION_MINOR 21)
+set (RELEASE_TYPE "")
 set (VERSION_STR "${API_REVISION}.${VERSION_MAJOR}.${VERSION_MINOR}${RELEASE_TYPE}")
 
 option (OPSTEP_FAST_AND_ROUGH "Fast and rough opcode step emulation mode" Off)

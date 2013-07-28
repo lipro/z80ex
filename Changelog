@@ -1,3 +1,7 @@
+29.07.2013 - 1.1.21
+- added API functions to set memory/port/int callbacks without resetting the virtual CPU
+- z80ex_get_version() was fixed to return the correct version string
+
 19.01.2013 - 1.1.20rev1
 - fixed library version mismatch between Makefile and CMakeLists.txt 
 	(thanks to John Paul Adrian Glaubitz)
@@ -19,8 +23,8 @@
 
 12.09.2009 - 1.1.18
 - HALT/NMI bugfix (by Kalvis)
-- some code were optimized for speed (by Mastermind)
-- RETI callback were implemented (by Torsten Paul)
+- some speed optimizations (by Mastermind)
+- RETI callback was implemented (by Torsten Paul)
 
 04.06.2009 - 1.1.17
 - ability to fetch z80ex version info at runtime, see z80ex_get_version()

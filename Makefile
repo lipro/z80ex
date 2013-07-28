@@ -30,8 +30,8 @@ EMU := libz80ex
 DASM := libz80ex_dasm
 API_REVISION := 1
 VERSION_MAJOR:=1
-VERSION_MINOR:=20
-RELEASE_TYPE :=rev1
+VERSION_MINOR:=21
+RELEASE_TYPE :=
 VERSION_STR:= ${API_REVISION}.${VERSION_MAJOR}.${VERSION_MINOR}${RELEASE_TYPE}
 
 OS=${shell uname -s}
@@ -94,7 +94,7 @@ endif
 dist: clean
 	rm -rf ./${PROJ}-${VERSION_STR}
 	ln -s ./ ./${PROJ}-${VERSION_STR}
-	tar --exclude obsolete --exclude ${PROJ}-${VERSION_STR}/${PROJ}-${VERSION_STR} --exclude ${PROJ}-${VERSION_STR}/${PROJ}-${VERSION_STR}.tar.gz -hcf - ./${PROJ}-${VERSION_STR}/ | gzip -f9 > ${PROJ}-${VERSION_STR}.tar.gz
+	tar --exclude-vcs --exclude obsolete --exclude ${PROJ}-${VERSION_STR}/${PROJ}-${VERSION_STR} --exclude ${PROJ}-${VERSION_STR}/${PROJ}-${VERSION_STR}.tar.gz -hcf - ./${PROJ}-${VERSION_STR}/ | gzip -f9 > ${PROJ}-${VERSION_STR}.tar.gz
 	rm -rf ./${PROJ}-${VERSION_STR}
 
 #EOF
