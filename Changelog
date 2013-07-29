@@ -1,3 +1,7 @@
+29.07.2013 - 1.1.21
+- added API functions to set memory/port/int callbacks without resetting the virtual CPU
+- z80ex_get_version() was fixed to return the correct version string
+
 19.01.2013 - 1.1.20rev1
 - fixed library version mismatch between Makefile and CMakeLists.txt 
 	(thanks to John Paul Adrian Glaubitz)
