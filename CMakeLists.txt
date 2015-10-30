@@ -58,10 +58,22 @@ set_target_properties(z80ex-static z80ex_dasm-static
     PROPERTIES VERSION ${VERSION_STR} SOVERSION ${API_REVISION}
 )
 
+# guess LIB_SUFFIX, don't take debian multiarch into account 
+if ( NOT DEFINED LIB_SUFFIX )
+  if( CMAKE_SYSTEM_NAME MATCHES "Linux"
+      AND NOT CMAKE_CROSSCOMPILING
+      AND NOT EXISTS "/etc/debian_version"
+      AND NOT EXISTS "/etc/arch-release" )
+    if ( "${CMAKE_SIZEOF_VOID_P}" EQUAL "8" )
+      set ( LIB_SUFFIX 64 )
+    endif ()
+  endif ()
+endif ()
+
 if ("${CMAKE_C_IMPLICIT_LINK_DIRECTORIES}" MATCHES "lib64")
     set (LIB_DIR "lib64")
 else ()
-    set (LIB_DIR "lib")
+    set (LIB_DIR "lib${LIB_SUFFIX}")
 endif ()
 if (NOT DEFINED Z80EX_STATIC_ONLY)
     install (TARGETS z80ex z80ex_dasm LIBRARY DESTINATION ${LIB_DIR} ARCHIVE DESTINATION ${LIB_DIR})
