@@ -5,7 +5,8 @@
 #################################################################
 # You may tune these values to feet your setup:
 #################################################################
-INSTALL_PREFIX := /usr/local
+INSTALL_PREFIX := $(DESTDIR)/usr
+#$(CURDIR)/debian/libz80ex/usr
 CC := gcc 
 ALL_CFLAGS := -fPIC -fno-common -ansi -pedantic -Wall -pipe -O2 -I. -I./include 
 LINKER := gcc
